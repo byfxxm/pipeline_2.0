@@ -4,6 +4,7 @@
 void pipeline_imp::add_worker(worker* w)
 {
 	w->_index = _workers.size();
+	w->_pipeline = this;
 	_workers.push_back(w);
 }
 
