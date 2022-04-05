@@ -7,18 +7,25 @@
 #endif
 
 struct code {};
-struct utils
-{
-	void (*write)(code*);
-};
 
-using procedure = void (*)(const utils*, code*);
+class PIPELINE_API worker
+{
+	friend class pipeline_imp;
+
+public:
+	virtual void process(code*) = 0;
+	virtual void write(code*);
+
+private:
+	void* _pipeline{ nullptr };
+	size_t _index{ 0 };
+};
 
 extern "C"
 {
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
-	PIPELINE_API void pipeline_add_procedure(void*, procedure);
+	PIPELINE_API void pipeline_add_worker(void*, worker*);
 	PIPELINE_API void pipeline_start(void*);
 	PIPELINE_API void pipeline_stop(void*);
 }

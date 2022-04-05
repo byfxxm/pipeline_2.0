@@ -1,31 +1,21 @@
 #include "pch.h"
 #include "pipeline_imp.h"
 
-void pipeline_imp::add_procedure(procedure proc)
+void pipeline_imp::add_worker(worker* w)
 {
-	_procs.push_back(proc);
+	w->_index = _workers.size();
+	_workers.push_back(w);
 }
 
 void pipeline_imp::start()
 {
-	if (_procs.empty())
+	if (_workers.empty())
 		return;
 
-	_procs[0](&_utils, new code());
+	_workers[0]->process(nullptr);
 }
 
 void pipeline_imp::stop()
-{
-
-}
-
-void pipeline_imp::_write(void* p, code* c)
-{
-	auto pipeline = (pipeline_imp*)p;
-	pipeline->_procs[++pipeline->_cur](&pipeline->_utils, c);
-}
-
-void pipeline_imp::_write(code*)
 {
 
 }

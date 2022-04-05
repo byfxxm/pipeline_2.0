@@ -12,9 +12,9 @@ void pipeline_delete(void* p)
 	delete p;
 }
 
-void pipeline_add_procedure(void* p, procedure proc)
+void pipeline_add_worker(void* p, worker* w)
 {
-	return ((pipeline_imp*)p)->add_procedure(proc);
+	return ((pipeline_imp*)p)->add_worker(w);
 }
 
 void pipeline_start(void* p)
