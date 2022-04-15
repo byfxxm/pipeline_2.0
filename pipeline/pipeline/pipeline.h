@@ -6,7 +6,9 @@
 #define PIPELINE_API __declspec(dllimport)
 #endif
 
-struct Code;
+struct Code {
+	int value;
+};
 class Worker;
 struct Utils {
 	using Write = void(Worker::*)(Code*);
@@ -20,6 +22,7 @@ extern "C"
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
 	PIPELINE_API void pipeline_add_procedure(void*, Procedure);
-	PIPELINE_API void pipeline_start(void*);
-	PIPELINE_API void pipeline_stop(void*);
+	PIPELINE_API void pipeline_start_async(void*);
+	PIPELINE_API void pipeline_stop_async(void*);
+	PIPELINE_API void pipeline_wait_for_idle(void*);
 }

@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <cassert>
 #include "../pipeline/pipeline.h"
 
 #ifdef _DEBUG
@@ -10,21 +11,34 @@
 #pragma comment(lib, "../Release/pipeline.lib")
 #endif
 
-class worker1 : public worker
-{
-public:
-	void process(code* c)
-	{
-		write(c);
-	}
-};
-
 int main()
 {
 	auto pipeline = pipeline_create();
-	worker1 w1;
-	pipeline_add_worker(pipeline, &w1);
-	pipeline_start(pipeline);
+
+	auto first = [](Code* code, Utils* utils) {
+		assert(!code);
+		for (int i = 0; i < 10000; ++i) {
+			(utils->worker->*utils->write)(new Code{ i });
+		}
+	};
+	auto procedure = [](Code* code, Utils* utils) {
+		(utils->worker->*utils->write)(code);
+	};
+	auto last = [](Code* code, Utils* utils) {
+		std::cout << code->value << std::endl;
+		delete code;
+	};
+
+	pipeline_add_procedure(pipeline, first);
+	pipeline_add_procedure(pipeline, procedure);
+	pipeline_add_procedure(pipeline, procedure);
+	pipeline_add_procedure(pipeline, procedure);
+	pipeline_add_procedure(pipeline, procedure);
+	pipeline_add_procedure(pipeline, procedure);
+	pipeline_add_procedure(pipeline, last);
+	pipeline_start_async(pipeline);
+	pipeline_wait_for_idle(pipeline);
+
 	pipeline_delete(pipeline);
 
 	return 0;

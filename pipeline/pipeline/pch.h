@@ -11,5 +11,6 @@
 #include "framework.h"
 #include <vector>
 #include <cassert>
+#include <thread>
 
 #endif //PCH_H

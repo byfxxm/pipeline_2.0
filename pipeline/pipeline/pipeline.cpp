@@ -14,10 +14,14 @@ void pipeline_add_procedure(void* p, Procedure proc) {
 	return ((PipelineImp*)p)->AddProcedure(proc);
 }
 
-void pipeline_start(void* p) {
-	return ((PipelineImp*)p)->Start();
+void pipeline_start_async(void* p) {
+	return ((PipelineImp*)p)->StartAsync();
 }
 
-void pipeline_stop(void* p) {
-	return ((PipelineImp*)p)->Stop();
+void pipeline_stop_async(void* p) {
+	return ((PipelineImp*)p)->StopAsync();
+}
+
+void pipeline_wait_for_idle(void* p) {
+	return ((PipelineImp*)p)->WaitForIdle();
 }

@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "worker.h"
+#include "pipeline_imp.h"
 
-Worker::Worker(Procedure proc) :procedure_(proc) {}
+Worker::Worker(const PipelineImp* pipeline, size_t index, Procedure proc) : pipeline_(pipeline), index_(index), procedure_(proc) {}
 
 void Worker::Do(Code* code) {
 	assert(procedure_);
@@ -10,8 +11,8 @@ void Worker::Do(Code* code) {
 }
 
 void Worker::Write(Code* code) {
-}
+	if (pipeline_->stop_ || index_ == pipeline_->workers_.size() - 1)
+		return;
 
-//void Worker::Write(void* worker, Code* code) {
-//	return ((Worker*)worker)->Write(code);
-//}
+	pipeline_->workers_[index_ + 1]->Do(code);
+}
