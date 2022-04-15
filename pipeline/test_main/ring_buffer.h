@@ -21,6 +21,7 @@ public:
 
 		data_[write_index] = t;
 		write_index = (write_index + 1) % N;
+		return true;
 	}
 
 	bool Read(T& t) {
@@ -29,6 +30,7 @@ public:
 
 		t = data_[read_index];
 		read_index = (read_index + 1) % N;
+		return true;
 	}
 
 private:

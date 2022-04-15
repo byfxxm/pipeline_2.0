@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="test_main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ring_buffer.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

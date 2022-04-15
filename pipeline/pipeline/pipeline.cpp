@@ -26,6 +26,6 @@ void pipeline_wait_for_idle(void* p) {
 	return ((PipelineImp*)p)->WaitForIdle();
 }
 
-void pipeline_set_output(void* p, Output output) {
-	return ((PipelineImp*)p)->SetOutput(output);
+void pipeline_set_output_switch(void* p, OutputSwitch* sw) {
+	return ((PipelineImp*)p)->SetOutputSwitch(sw);
 }

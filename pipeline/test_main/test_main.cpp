@@ -5,6 +5,7 @@
 #include <cassert>
 #include <thread>
 #include "../pipeline/pipeline.h"
+#include "ring_buffer.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/pipeline.lib")
@@ -13,6 +14,16 @@
 #endif
 
 #define WRITE(code) ((utils->worker->*utils->write)(code))
+
+class Fifo :public OutputSwitch {
+public:
+	virtual bool Write(const Code* code) override {
+		return ring_buffer_.Write(code);
+	}
+
+private:
+	RingBuffer<const Code*, 1000> ring_buffer_;
+};
 
 int main()
 {
@@ -28,10 +39,10 @@ int main()
 		WRITE(new Code(*code));
 		WRITE(code);
 	};
-	auto last = [](Utils* utils, Code* code) {
-		assert(utils->output);
-		utils->output(code);
-	};
+	//auto last = [](Utils* utils, Code* code) {
+	//	assert(utils->output);
+	//	utils->output(code);
+	//};
 
 	pipeline_add_procedure(pipeline, first);
 	pipeline_add_procedure(pipeline, procedure);
@@ -39,11 +50,9 @@ int main()
 	pipeline_add_procedure(pipeline, procedure);
 	pipeline_add_procedure(pipeline, procedure);
 	pipeline_add_procedure(pipeline, procedure);
-	pipeline_add_procedure(pipeline, last);
-	pipeline_set_output(pipeline, [](Code* code) {
-		std::cout << code->value << std::endl;
-		delete code;
-		});
+	//pipeline_add_procedure(pipeline, last);
+	Fifo fifo;
+	pipeline_set_output_switch(pipeline, &fifo);
 	pipeline_start_async(pipeline);
 
 	std::thread th([&]() {

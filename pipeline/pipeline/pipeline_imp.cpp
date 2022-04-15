@@ -30,6 +30,6 @@ void PipelineImp::WaitForIdle() {
 		thread_.join();
 }
 
-void PipelineImp::SetOutput(Output output) {
-	output_ = output;
+void PipelineImp::SetOutputSwitch(OutputSwitch* sw) {
+	output_switch_ = sw;
 }

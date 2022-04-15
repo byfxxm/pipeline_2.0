@@ -10,14 +10,17 @@ struct Code {
 	int value;
 };
 class Worker;
-using Output = void(*)(Code*);
 struct Utils {
 	using Write = void(Worker::*)(Code*);
 	Worker* worker;
 	Write write;
-	Output output;
 };
 using Procedure = void(*)(Utils*, Code*);
+
+class OutputSwitch {
+public:
+	virtual bool Write(const Code*) = 0;
+};
 
 extern "C"
 {
@@ -27,5 +30,5 @@ extern "C"
 	PIPELINE_API void pipeline_start_async(void*);
 	PIPELINE_API void pipeline_stop_async(void*);
 	PIPELINE_API void pipeline_wait_for_idle(void*);
-	PIPELINE_API void pipeline_set_output(void*, Output);
+	PIPELINE_API void pipeline_set_output_switch(void*, OutputSwitch*);
 }
