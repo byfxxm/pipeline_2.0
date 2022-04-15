@@ -15,16 +15,17 @@ int main()
 {
 	auto pipeline = pipeline_create();
 
-	auto first = [](Code* code, Utils* utils) {
+	auto first = [](Utils* utils, Code* code) {
 		assert(!code);
-		for (int i = 0; i < 10000; ++i) {
+		for (int i = 0; i < 100; ++i) {
 			(utils->worker->*utils->write)(new Code{ i });
 		}
 	};
-	auto procedure = [](Code* code, Utils* utils) {
+	auto procedure = [](Utils* utils, Code* code) {
+		(utils->worker->*utils->write)(new Code(*code));
 		(utils->worker->*utils->write)(code);
 	};
-	auto last = [](Code* code, Utils* utils) {
+	auto last = [](Utils* utils, Code* code) {
 		std::cout << code->value << std::endl;
 		delete code;
 	};

@@ -15,7 +15,7 @@ struct Utils {
 	Worker* worker;
 	Write write;
 };
-using Procedure = void(*)(Code*, Utils*);
+using Procedure = void(*)(Utils*, Code*);
 
 extern "C"
 {
