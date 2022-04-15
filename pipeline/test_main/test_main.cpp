@@ -11,6 +11,8 @@
 #pragma comment(lib, "../Release/pipeline.lib")
 #endif
 
+#define WRITE(code) ((utils->worker->*utils->write)(code))
+
 int main()
 {
 	auto pipeline = pipeline_create();
@@ -18,12 +20,12 @@ int main()
 	auto first = [](Utils* utils, Code* code) {
 		assert(!code);
 		for (int i = 0; i < 100; ++i) {
-			(utils->worker->*utils->write)(new Code{ i });
+			WRITE(new Code{ i });
 		}
 	};
 	auto procedure = [](Utils* utils, Code* code) {
-		(utils->worker->*utils->write)(new Code(*code));
-		(utils->worker->*utils->write)(code);
+		WRITE(new Code(*code));
+		WRITE(code);
 	};
 	auto last = [](Utils* utils, Code* code) {
 		std::cout << code->value << std::endl;
