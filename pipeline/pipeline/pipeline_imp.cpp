@@ -8,6 +8,7 @@ PipelineImp::~PipelineImp() {
 }
 
 void PipelineImp::AddProcedure(Procedure proc) {
+	assert(proc);
 	workers_.push_back(new Worker(this, workers_.size(), proc));
 }
 
