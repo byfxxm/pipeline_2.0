@@ -1,14 +1,13 @@
 #pragma once
 #include "pipeline.h"
 
-class PipelineImp final
-{
-	friend class Worker;
-
+class Worker;
+class PipelineImp final {
 public:
-	void add_worker(Worker*);
-	void start();
-	void stop();
+	~PipelineImp();
+	void AddProcedure(Procedure);
+	void Start();
+	void Stop();
 
 private:
 	std::vector<Worker*> workers_;

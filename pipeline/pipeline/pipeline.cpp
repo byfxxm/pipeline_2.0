@@ -2,27 +2,22 @@
 #include "pipeline.h"
 #include "pipeline_imp.h"
 
-void* pipeline_create()
-{
+void* pipeline_create() {
 	return new PipelineImp();
 }
 
-void pipeline_delete(void* p)
-{
+void pipeline_delete(void* p) {
 	delete p;
 }
 
-void pipeline_add_worker(void* p, Worker* w)
-{
-	return ((PipelineImp*)p)->add_worker(w);
+void pipeline_add_procedure(void* p, Procedure proc) {
+	return ((PipelineImp*)p)->AddProcedure(proc);
 }
 
-void pipeline_start(void* p)
-{
-	return ((PipelineImp*)p)->start();
+void pipeline_start(void* p) {
+	return ((PipelineImp*)p)->Start();
 }
 
-void pipeline_stop(void* p)
-{
-	return ((PipelineImp*)p)->stop();
+void pipeline_stop(void* p) {
+	return ((PipelineImp*)p)->Stop();
 }

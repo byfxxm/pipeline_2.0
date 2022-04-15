@@ -1,11 +1,17 @@
 #include "pch.h"
-#include "pipeline.h"
-#include "pipeline_imp.h"
+#include "worker.h"
 
-void Worker::write(Code* c)
-{
-	auto p = (PipelineImp*)pipeline_;
+Worker::Worker(Procedure proc) :procedure_(proc) {}
 
-	if (index_ < p->workers_.size() - 1)
-		p->workers_[index_ + 1]->process(c);
+void Worker::Do(Code* code) {
+	assert(procedure_);
+	Utils utils{ this, &Worker::Write };
+	procedure_(code, &utils);
 }
+
+void Worker::Write(Code* code) {
+}
+
+//void Worker::Write(void* worker, Code* code) {
+//	return ((Worker*)worker)->Write(code);
+//}
