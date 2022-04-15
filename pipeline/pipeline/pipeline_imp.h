@@ -11,9 +11,11 @@ public:
 	void StartAsync();
 	void StopAsync();
 	void WaitForIdle();
+	void SetOutput(Output);
 
 private:
 	std::vector<Worker*> workers_;
 	volatile bool stop_{ false };
 	std::thread thread_;
+	Output output_{ nullptr };
 };

@@ -10,10 +10,12 @@ struct Code {
 	int value;
 };
 class Worker;
+using Output = void(*)(Code*);
 struct Utils {
 	using Write = void(Worker::*)(Code*);
 	Worker* worker;
 	Write write;
+	Output output;
 };
 using Procedure = void(*)(Utils*, Code*);
 
@@ -25,4 +27,5 @@ extern "C"
 	PIPELINE_API void pipeline_start_async(void*);
 	PIPELINE_API void pipeline_stop_async(void*);
 	PIPELINE_API void pipeline_wait_for_idle(void*);
+	PIPELINE_API void pipeline_set_output(void*, Output);
 }

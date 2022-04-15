@@ -28,3 +28,7 @@ void PipelineImp::WaitForIdle() {
 	if (thread_.joinable())
 		thread_.join();
 }
+
+void PipelineImp::SetOutput(Output output) {
+	output_ = output;
+}

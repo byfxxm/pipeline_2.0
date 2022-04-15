@@ -29,8 +29,8 @@ int main()
 		WRITE(code);
 	};
 	auto last = [](Utils* utils, Code* code) {
-		std::cout << code->value << std::endl;
-		delete code;
+		assert(utils->output);
+		utils->output(code);
 	};
 
 	pipeline_add_procedure(pipeline, first);
@@ -40,6 +40,10 @@ int main()
 	pipeline_add_procedure(pipeline, procedure);
 	pipeline_add_procedure(pipeline, procedure);
 	pipeline_add_procedure(pipeline, last);
+	pipeline_set_output(pipeline, [](Code* code) {
+		std::cout << code->value << std::endl;
+		delete code;
+		});
 	pipeline_start_async(pipeline);
 
 	std::thread th([&]() {

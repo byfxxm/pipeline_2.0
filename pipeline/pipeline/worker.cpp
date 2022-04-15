@@ -6,7 +6,7 @@ Worker::Worker(const PipelineImp* pipeline, size_t index, Procedure proc) : pipe
 
 void Worker::Do(Code* code) {
 	assert(procedure_);
-	Utils utils{ this, &Worker::Write };
+	Utils utils{ this, &Worker::Write, pipeline_->output_ };
 	procedure_(&utils, code);
 }
 

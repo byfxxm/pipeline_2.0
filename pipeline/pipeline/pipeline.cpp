@@ -25,3 +25,7 @@ void pipeline_stop_async(void* p) {
 void pipeline_wait_for_idle(void* p) {
 	return ((PipelineImp*)p)->WaitForIdle();
 }
+
+void pipeline_set_output(void* p, Output output) {
+	return ((PipelineImp*)p)->SetOutput(output);
+}
