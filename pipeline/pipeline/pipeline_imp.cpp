@@ -13,9 +13,11 @@ void PipelineImp::AddProcedure(Procedure proc) {
 
 void PipelineImp::StartAsync() {
 	stop_ = false;
-	thread_ = std::thread([this]() {
-		workers_[0]->Do(nullptr);
-		});
+	if (!workers_.empty()) {
+		thread_ = std::thread([this]() {
+			workers_[0]->Do(nullptr);
+			});
+	}
 }
 
 void PipelineImp::StopAsync() {
