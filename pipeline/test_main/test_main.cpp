@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <thread>
 #include "../pipeline/pipeline.h"
 
 #ifdef _DEBUG
@@ -19,7 +20,7 @@ int main()
 
 	auto first = [](Utils* utils, Code* code) {
 		assert(!code);
-		for (int i = 0; i < 100; ++i) {
+		for (int i = 0; i < 10000; ++i) {
 			WRITE(new Code{ i });
 		}
 	};
@@ -40,8 +41,14 @@ int main()
 	pipeline_add_procedure(pipeline, procedure);
 	pipeline_add_procedure(pipeline, last);
 	pipeline_start_async(pipeline);
-	pipeline_wait_for_idle(pipeline);
 
+	std::thread th([&]() {
+		getchar();
+		pipeline_stop_async(pipeline);
+		});
+	th.detach();
+
+	pipeline_wait_for_idle(pipeline);
 	pipeline_delete(pipeline);
 
 	return 0;
