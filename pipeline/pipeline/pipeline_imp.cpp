@@ -1,22 +1,22 @@
 #include "pch.h"
 #include "pipeline_imp.h"
 
-void pipeline_imp::add_worker(worker* w)
+void PipelineImp::add_worker(Worker* w)
 {
-	w->_index = _workers.size();
-	w->_pipeline = this;
-	_workers.push_back(w);
+	w->index_ = workers_.size();
+	w->pipeline_ = this;
+	workers_.push_back(w);
 }
 
-void pipeline_imp::start()
+void PipelineImp::start()
 {
-	if (_workers.empty())
+	if (workers_.empty())
 		return;
 
-	_workers[0]->process(nullptr);
+	workers_[0]->process(nullptr);
 }
 
-void pipeline_imp::stop()
+void PipelineImp::stop()
 {
 
 }

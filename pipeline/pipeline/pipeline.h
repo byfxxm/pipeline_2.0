@@ -6,26 +6,26 @@
 #define PIPELINE_API __declspec(dllimport)
 #endif
 
-struct code {};
+struct Code {};
 
-class PIPELINE_API worker
+class PIPELINE_API Worker
 {
-	friend class pipeline_imp;
+	friend class PipelineImp;
 
 public:
-	virtual void process(code*) = 0;
-	virtual void write(code*);
+	virtual void process(Code*) = 0;
+	virtual void write(Code*);
 
 private:
-	void* _pipeline{ nullptr };
-	size_t _index{ 0 };
+	void* pipeline_{ nullptr };
+	size_t index_{ 0 };
 };
 
 extern "C"
 {
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
-	PIPELINE_API void pipeline_add_worker(void*, worker*);
+	PIPELINE_API void pipeline_add_worker(void*, Worker*);
 	PIPELINE_API void pipeline_start(void*);
 	PIPELINE_API void pipeline_stop(void*);
 }

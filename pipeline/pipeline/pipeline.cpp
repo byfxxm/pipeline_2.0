@@ -4,7 +4,7 @@
 
 void* pipeline_create()
 {
-	return new pipeline_imp();
+	return new PipelineImp();
 }
 
 void pipeline_delete(void* p)
@@ -12,17 +12,17 @@ void pipeline_delete(void* p)
 	delete p;
 }
 
-void pipeline_add_worker(void* p, worker* w)
+void pipeline_add_worker(void* p, Worker* w)
 {
-	return ((pipeline_imp*)p)->add_worker(w);
+	return ((PipelineImp*)p)->add_worker(w);
 }
 
 void pipeline_start(void* p)
 {
-	return ((pipeline_imp*)p)->start();
+	return ((PipelineImp*)p)->start();
 }
 
 void pipeline_stop(void* p)
 {
-	return ((pipeline_imp*)p)->stop();
+	return ((PipelineImp*)p)->stop();
 }
