@@ -30,6 +30,9 @@
     <ClInclude Include="worker.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="ring_buffer.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pipeline.cpp">
