@@ -12,5 +12,6 @@
 #include <vector>
 #include <cassert>
 #include <thread>
+#include <cstring>
 
 #endif //PCH_H

@@ -4,3 +4,7 @@
 void GparserWorker::Do(Code*) {
 
 }
+
+bool GparserWorker::LoadFile(const char*) {
+
+}

@@ -2,10 +2,14 @@
 #include "gparser.h"
 #include "gparser_worker.h"
 
-Worker* g_create() {
+Worker* gparser_create() {
 	return new GparserWorker();
 }
 
-void g_delete(Worker* p) {
+void gparser_delete(Worker* p) {
 	delete p;
+}
+
+bool gparser_load_file(Worker* p, const char* file) {
+	return ((GparserWorker*)p)->LoadFile(file);
 }
