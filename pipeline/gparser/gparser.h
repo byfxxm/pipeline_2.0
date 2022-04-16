@@ -13,15 +13,17 @@ enum class Token {
 	kZ,
 };
 
-namespace std {
-	template<typename Key, typename Value>
-	class unordered_map;
-}
-
 class Command {
 public:
-	using Data = std::unordered_map<Token, double>;
-	virtual void G0(Data*) = 0;
+	struct Data {
+		Token token;
+		double value;
+	};
+
+	virtual void G0(Data*, int) = 0;
+	virtual void G1(Data*, int) = 0;
+	virtual void G2(Data*, int) = 0;
+	virtual void G3(Data*, int) = 0;
 };
 
 extern "C" {

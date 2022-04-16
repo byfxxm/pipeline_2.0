@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "g_parser.h"
-#include "g_parser_worker.h"
+#include "gparser.h"
+#include "gparser_worker.h"
 
 Worker* g_create() {
 	return new GParserWorker();

@@ -21,15 +21,15 @@
     <ClInclude Include="pch.h">
       <Filter>dll</Filter>
     </ClInclude>
-    <ClInclude Include="g_parser.h">
+    <ClInclude Include="gparser.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="g_parser_worker.h">
+    <ClInclude Include="gparser_worker.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="g_parser.cpp">
+    <ClCompile Include="gparser.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -38,7 +38,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>dll</Filter>
     </ClCompile>
-    <ClCompile Include="g_parser_worker.cpp">
+    <ClCompile Include="gparser_worker.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
