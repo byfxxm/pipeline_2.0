@@ -14,16 +14,20 @@
 #pragma comment(lib, "../Release/pipeline.lib")
 #endif
 
-class Fifo :public OutputSwitch {
+class Fifo final :public OutputSwitch {
 public:
 	virtual void Write(Code* code) override {
 		while (!ring_buffer_.Write(code))
 			std::this_thread::yield();
 	}
 
-	virtual void Read(Code*& code) {
+	void Read(Code*& code) {
 		while (!ring_buffer_.Read(code))
 			std::this_thread::yield();
+	}
+
+	bool IsEmpty() {
+		return ring_buffer_.IsEmpty();
 	}
 
 private:
@@ -67,7 +71,7 @@ int main()
 		Code* code = nullptr;
 		while (1) {
 			fifo.Read(code);
-			if (!code || pipeline_is_idle(pipeline))
+			if (!code || (pipeline_is_idle(pipeline) && fifo.IsEmpty()))
 				break;
 			std::cout << code->value << std::endl;
 			delete code;
