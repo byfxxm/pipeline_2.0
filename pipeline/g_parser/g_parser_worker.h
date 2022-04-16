@@ -1,6 +1,6 @@
 #pragma once
 
-class GParserImp :public Worker {
+class GParserWorker :public Worker {
 public:
 	virtual void Do(Code*) override;
 };

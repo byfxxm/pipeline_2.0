@@ -24,7 +24,7 @@
     <ClInclude Include="g_parser.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="g_parser_imp.h">
+    <ClInclude Include="g_parser_worker.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>dll</Filter>
     </ClCompile>
-    <ClCompile Include="g_parser_imp.cpp">
+    <ClCompile Include="g_parser_worker.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
