@@ -7,7 +7,7 @@ class PipelineImp final {
 
 public:
 	~PipelineImp();
-	void AddProcedure(Procedure);
+	void AddWorker(Worker*);
 	void StartAsync();
 	void StopAsync();
 	void WaitForIdle();

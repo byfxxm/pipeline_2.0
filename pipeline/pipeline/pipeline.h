@@ -9,24 +9,30 @@
 struct Code {
 	int value;
 };
-class Worker;
-struct Utils {
-	using Write = void(Worker::*)(Code*);
-	Worker* worker;
-	Write write;
+
+class PIPELINE_API Worker {
+public:
+	virtual void Do(Code*) = 0;
+
+protected:
+	void Write(Code*);
+
+private:
+	friend class PipelineImp;
+	const PipelineImp* pipeline_{ nullptr };
+	size_t index_{ 0 };
 };
-using Procedure = void(*)(Utils*, Code*);
 
 class OutputSwitch {
 public:
-	virtual bool Write(const Code*) = 0;
+	virtual void Write(Code*) = 0;
 };
 
 extern "C"
 {
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
-	PIPELINE_API void pipeline_add_procedure(void*, Procedure);
+	PIPELINE_API void pipeline_add_worker(void*, Worker*);
 	PIPELINE_API void pipeline_start_async(void*);
 	PIPELINE_API void pipeline_stop_async(void*);
 	PIPELINE_API void pipeline_wait_for_idle(void*);

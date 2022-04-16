@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cassert>
 #include <thread>
+#include <chrono>
 #include "../pipeline/pipeline.h"
 #include "ring_buffer.h"
 
@@ -17,43 +18,63 @@
 
 class Fifo :public OutputSwitch {
 public:
-	virtual bool Write(const Code* code) override {
-		return ring_buffer_.Write(code);
+	virtual void Write(Code* code) override {
+		while (!ring_buffer_.Write(code))
+			std::this_thread::yield();
+	}
+
+	virtual void Read(Code*& code) {
+		while (!ring_buffer_.Read(code))
+			std::this_thread::yield();
 	}
 
 private:
-	RingBuffer<const Code*, 1000> ring_buffer_;
+	RingBuffer<Code*, 1000> ring_buffer_;
+};
+
+class Worker1 :public Worker {
+public:
+	virtual void Do(Code* code) override {
+		assert(!code);
+		for (int i = 0; i < 10000; ++i)
+			Write(new Code{ i });
+
+		Write(code);
+	}
+};
+
+class WorkerMiddle :public Worker {
+public:
+	virtual void Do(Code* code) override {
+		Write(code);
+	}
 };
 
 int main()
 {
 	auto pipeline = pipeline_create();
 
-	auto first = [](Utils* utils, Code* code) {
-		assert(!code);
-		for (int i = 0; i < 10000; ++i) {
-			WRITE(new Code{ i });
-		}
-	};
-	auto procedure = [](Utils* utils, Code* code) {
-		WRITE(new Code(*code));
-		WRITE(code);
-	};
-	//auto last = [](Utils* utils, Code* code) {
-	//	assert(utils->output);
-	//	utils->output(code);
-	//};
+	Worker1 first;
+	WorkerMiddle workers[10];
 
-	pipeline_add_procedure(pipeline, first);
-	pipeline_add_procedure(pipeline, procedure);
-	pipeline_add_procedure(pipeline, procedure);
-	pipeline_add_procedure(pipeline, procedure);
-	pipeline_add_procedure(pipeline, procedure);
-	pipeline_add_procedure(pipeline, procedure);
-	//pipeline_add_procedure(pipeline, last);
+	pipeline_add_worker(pipeline, &first);
+	for (auto& worker : workers)
+		pipeline_add_worker(pipeline, &worker);
+
 	Fifo fifo;
 	pipeline_set_output_switch(pipeline, &fifo);
 	pipeline_start_async(pipeline);
+	
+	std::thread mcc([&]() {
+		Code* code = nullptr;
+		while (1) {
+			fifo.Read(code);
+			if (!code)
+				break;
+			std::cout << code->value << std::endl;
+			delete code;
+		}
+		});
 
 	std::thread th([&]() {
 		getchar();
@@ -62,6 +83,7 @@ int main()
 	th.detach();
 
 	pipeline_wait_for_idle(pipeline);
+	mcc.join();
 	pipeline_delete(pipeline);
 
 	return 0;
