@@ -2,6 +2,7 @@
 #include "pipeline_imp.h"
 
 PipelineImp::~PipelineImp() {
+	assert(IsIdle());
 	for (auto it : workers_)
 		delete it;
 }
