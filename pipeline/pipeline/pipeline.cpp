@@ -29,3 +29,7 @@ void pipeline_wait_for_idle(void* p) {
 void pipeline_set_output_switch(void* p, OutputSwitch* sw) {
 	return ((PipelineImp*)p)->SetOutputSwitch(sw);
 }
+
+bool pipeline_is_idle(void* p) {
+	return ((PipelineImp*)p)->IsIdle();
+}

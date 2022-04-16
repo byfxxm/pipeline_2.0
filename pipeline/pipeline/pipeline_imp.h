@@ -12,6 +12,7 @@ public:
 	void StopAsync();
 	void WaitForIdle();
 	void SetOutputSwitch(OutputSwitch* sw);
+	bool IsIdle();
 
 private:
 	std::vector<Worker*> workers_;

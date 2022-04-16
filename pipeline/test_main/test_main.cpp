@@ -14,8 +14,6 @@
 #pragma comment(lib, "../Release/pipeline.lib")
 #endif
 
-#define WRITE(code) ((utils->worker->*utils->write)(code))
-
 class Fifo :public OutputSwitch {
 public:
 	virtual void Write(Code* code) override {
@@ -69,7 +67,7 @@ int main()
 		Code* code = nullptr;
 		while (1) {
 			fifo.Read(code);
-			if (!code)
+			if (!code || pipeline_is_idle(pipeline))
 				break;
 			std::cout << code->value << std::endl;
 			delete code;

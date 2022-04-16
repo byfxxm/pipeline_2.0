@@ -37,4 +37,5 @@ extern "C"
 	PIPELINE_API void pipeline_stop_async(void*);
 	PIPELINE_API void pipeline_wait_for_idle(void*);
 	PIPELINE_API void pipeline_set_output_switch(void*, OutputSwitch*);
+	PIPELINE_API bool pipeline_is_idle(void*);
 }

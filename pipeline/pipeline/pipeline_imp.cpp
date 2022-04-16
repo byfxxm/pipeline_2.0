@@ -34,3 +34,7 @@ void PipelineImp::WaitForIdle() {
 void PipelineImp::SetOutputSwitch(OutputSwitch* sw) {
 	output_switch_ = sw;
 }
+
+bool PipelineImp::IsIdle() {
+	return !thread_.joinable();
+}
