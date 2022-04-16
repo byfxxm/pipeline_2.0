@@ -13,3 +13,7 @@ void gparser_delete(Worker* p) {
 bool gparser_load_file(Worker* p, const char* file) {
 	return ((GparserWorker*)p)->LoadFile(file);
 }
+
+void gparser_unload_file(Worker* p) {
+	return ((GparserWorker*)p)->UnloadFile();
+}

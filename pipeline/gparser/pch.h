@@ -9,6 +9,12 @@
 
 // 添加要在此处预编译的标头
 #include "framework.h"
+
+#include <string>
+#include <filesystem>
+#include <fstream>
+#include <cassert>
+#include <iostream>
 #include "../pipeline/pipeline.h"
 
 #endif //PCH_H

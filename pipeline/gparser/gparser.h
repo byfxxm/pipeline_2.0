@@ -30,4 +30,5 @@ extern "C" {
 	GPARSER_API Worker* gparser_create();
 	GPARSER_API void gparser_delete(Worker*);
 	GPARSER_API bool gparser_load_file(Worker*, const char*);
+	GPARSER_API void gparser_unload_file(Worker*);
 }

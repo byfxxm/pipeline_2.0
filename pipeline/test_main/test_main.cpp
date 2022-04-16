@@ -5,13 +5,16 @@
 #include <cassert>
 #include <thread>
 #include <chrono>
-#include "../pipeline/pipeline.h"
 #include "ring_buffer.h"
+#include "../pipeline/pipeline.h"
+#include "../gparser/gparser.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/pipeline.lib")
+#pragma comment(lib, "../Debug/gparser.lib")
 #else
 #pragma comment(lib, "../Release/pipeline.lib")
+#pragma comment(lib, "../Release/gparser.lib")
 #endif
 
 class Fifo final :public OutputSwitch {
@@ -34,17 +37,6 @@ private:
 	RingBuffer<Code*, 1000> ring_buffer_;
 };
 
-class Worker1 :public Worker {
-public:
-	virtual void Do(Code* code) override {
-		assert(!code);
-		for (int i = 0; i < 10000; ++i)
-			Write(new Code{ i });
-
-		Write(code);
-	}
-};
-
 class WorkerMiddle :public Worker {
 public:
 	virtual void Do(Code* code) override {
@@ -56,10 +48,10 @@ int main()
 {
 	auto pipeline = pipeline_create();
 
-	Worker1 first;
+	auto gparser = gparser_create();
 	WorkerMiddle workers[10];
 
-	pipeline_add_worker(pipeline, &first);
+	pipeline_add_worker(pipeline, gparser);
 	for (auto& worker : workers)
 		pipeline_add_worker(pipeline, &worker);
 
@@ -87,6 +79,7 @@ int main()
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();
 	pipeline_delete(pipeline);
+	gparser_delete(gparser);
 
 	return 0;
 }

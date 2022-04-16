@@ -5,7 +5,8 @@ public:
 	virtual ~GparserWorker() override = default;
 	virtual void Do(Code*) override;
 	bool LoadFile(const char*);
+	void UnloadFile();
 
 private:
-	std::string file_;
+	std::ifstream fin_;
 };
