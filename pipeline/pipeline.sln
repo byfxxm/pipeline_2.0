@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_main", "test_main\test
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gparser", "gparser\gparser.vcxproj", "{A96C7E92-34C2-4CEE-8F4B-E038260E7C86}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D0C74555-A6C1-48BC-B5B6-80051EBCD5EC} = {D0C74555-A6C1-48BC-B5B6-80051EBCD5EC}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
