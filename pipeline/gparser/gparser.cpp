@@ -3,7 +3,7 @@
 #include "gparser_worker.h"
 
 Worker* g_create() {
-	return new GParserWorker();
+	return new GparserWorker();
 }
 
 void g_delete(Worker* p) {

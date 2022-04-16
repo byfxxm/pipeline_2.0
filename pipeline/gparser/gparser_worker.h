@@ -1,6 +1,7 @@
 #pragma once
 
-class GParserWorker :public Worker {
+class GparserWorker :public Worker {
 public:
+	virtual ~GparserWorker() override = default;
 	virtual void Do(Code*) override;
 };

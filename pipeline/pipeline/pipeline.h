@@ -12,6 +12,7 @@ struct Code {
 
 class PIPELINE_API Worker {
 public:
+	virtual ~Worker() = default;
 	virtual void Do(Code*) = 0;
 	void Write(Code*);
 
