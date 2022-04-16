@@ -7,7 +7,7 @@ void* pipeline_create() {
 }
 
 void pipeline_delete(void* p) {
-	delete p;
+	delete (PipelineImp*)p;
 }
 
 void pipeline_add_worker(void* p, Worker* worker) {
