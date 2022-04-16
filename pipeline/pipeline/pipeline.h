@@ -11,11 +11,11 @@ struct Code {
 };
 
 class PIPELINE_API Worker {
-public:
-	virtual void Do(Code*) = 0;
-
 protected:
 	void Write(Code*);
+
+private:
+	virtual void Do(Code*) = 0;
 
 private:
 	friend class PipelineImp;
