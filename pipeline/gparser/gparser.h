@@ -21,16 +21,14 @@ struct Tag {
 
 class GProcesser {
 public:
-	virtual void G0(Tag*, int) = 0;
-	virtual void G1(Tag*, int) = 0;
-	virtual void G2(Tag*, int) = 0;
-	virtual void G3(Tag*, int) = 0;
+	virtual void G0(int, Tag*, int) = 0;
+	virtual void G1(int, Tag*, int) = 0;
+	virtual void G2(int, Tag*, int) = 0;
+	virtual void G3(int, Tag*, int) = 0;
 };
 
 extern "C" {
-	GPARSER_API Worker* gparser_create();
-	GPARSER_API void gparser_delete(Worker*);
-	GPARSER_API bool gparser_load_file(Worker*, const char*);
-	GPARSER_API void gparser_unload_file(Worker*);
-	GPARSER_API void gparser_set_g_processer(Worker*, GProcesser*);
+	GPARSER_API void* gparser_create(const char*, GProcesser*);
+	GPARSER_API void gparser_delete(void*);
+	GPARSER_API void gparser_parse(void*);
 }

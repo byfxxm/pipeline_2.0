@@ -1,23 +1,15 @@
 #include "pch.h"
 #include "gparser.h"
-#include "gparser_worker.h"
+#include "gparser_imp.h"
 
-Worker* gparser_create() {
-	return new GparserWorker();
+void* gparser_create(const char* file, GProcesser* proc) {
+	return new GparserImp(file, proc);
 }
 
-void gparser_delete(Worker* p) {
-	delete p;
+void gparser_delete(void* p) {
+	delete (GparserImp*)p;
 }
 
-bool gparser_load_file(Worker* p, const char* file) {
-	return ((GparserWorker*)p)->LoadFile(file);
-}
-
-void gparser_unload_file(Worker* p) {
-	return ((GparserWorker*)p)->UnloadFile();
-}
-
-void gparser_set_g_processer(Worker* p, GProcesser* proc) {
-	return ((GparserWorker*)p)->SetGProcesser(proc);
+void gparser_parse(void* p) {
+	return ((GparserImp*)p)->Parse();
 }

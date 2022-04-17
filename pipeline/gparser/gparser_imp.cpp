@@ -1,16 +1,41 @@
 #include "pch.h"
 #include "gparser_imp.h"
 
-GReader::GReader(const std::filesystem::path& path) {
+const std::unordered_map<std::string, GparserImp::ProcessFunc> GparserImp::kProcessFuncs = {
+	{"G0", &GProcesser::G0},
+	{"G1", &GProcesser::G1},
+	{"G2", &GProcesser::G2},
+	{"G3", &GProcesser::G3},
+};
+
+GparserImp::GparserImp(const std::filesystem::path& path, GProcesser* proc) : g_processer_(proc) {
 	fin_.open(path);
 	assert(fin_.is_open());
+	assert(g_processer_);
 }
 
-GReader::~GReader() {
+GparserImp::~GparserImp() {
 	fin_.close();
 }
 
-std::optional<std::vector<Tag>> GReader::NextLine() {
+void GparserImp::Parse() {
+	while (1) {
+		auto line_op = NextLine();
+		if (!line_op.has_value())
+			break;
+
+		auto line = line_op.value();
+		for (const auto& it : line) {
+			std::stringstream tag;
+			tag << (char)it.token << it.value;
+			auto tag_it = kProcessFuncs.find(tag.str());
+			if (tag_it != kProcessFuncs.end())
+				(g_processer_->*tag_it->second)(cur_line_no_, line.data(), line.size());
+		}
+	}
+}
+
+GparserImp::Line GparserImp::NextLine() {
 	std::optional<std::vector<Tag>> ret;
 	++cur_line_no_;
 	std::getline(fin_, cur_line_str_);
@@ -28,7 +53,7 @@ std::optional<std::vector<Tag>> GReader::NextLine() {
 	return ret;
 }
 
-std::optional<Tag> GReader::NextTag() {
+std::optional<Tag> GparserImp::NextTag() {
 	std::optional<Tag> ret;
 
 	SkipSpace();
@@ -41,7 +66,7 @@ std::optional<Tag> GReader::NextTag() {
 	return Tag(token.value(), value.value());
 }
 
-std::optional<Token> GReader::NextToken() {
+std::optional<Token> GparserImp::NextToken() {
 	auto ch_op = NextChar();
 	if (!ch_op.has_value())
 		return std::nullopt;
@@ -59,7 +84,7 @@ std::optional<Token> GReader::NextToken() {
 	return std::nullopt;
 }
 
-std::optional<double> GReader::NextValue() {
+std::optional<double> GparserImp::NextValue() {
 	std::string value;
 	std::optional<char> ch_op;
 
@@ -74,7 +99,7 @@ std::optional<double> GReader::NextValue() {
 	return value.empty() ? std::nullopt : std::optional<double>(std::stod(value));
 }
 
-inline std::optional<char> GReader::NextChar() {
+inline std::optional<char> GparserImp::NextChar() {
 	auto ch_op = PeekChar();
 
 	if (!ch_op.has_value())
@@ -84,20 +109,16 @@ inline std::optional<char> GReader::NextChar() {
 	return ch_op;
 }
 
-inline std::optional<char> GReader::PeekChar() {
+inline std::optional<char> GparserImp::PeekChar() {
 	if (cur_line_cursor_ == cur_line_str_.size())
 		return std::nullopt;
 
 	return cur_line_str_[cur_line_cursor_];
 }
 
-void GReader::SkipSpace() {
+void GparserImp::SkipSpace() {
 	std::optional<char> ch_op;
 	while ((ch_op = PeekChar()).has_value() && std::isspace(ch_op.value())) {
 		NextChar();
 	}
-}
-
-int GReader::GetCurLineNo() const {
-	return cur_line_no_;
 }

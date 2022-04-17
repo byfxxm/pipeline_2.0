@@ -15,6 +15,6 @@
 #include <fstream>
 #include <cassert>
 #include <iostream>
-#include "../pipeline/pipeline.h"
+#include <unordered_map>
 
 #endif //PCH_H
