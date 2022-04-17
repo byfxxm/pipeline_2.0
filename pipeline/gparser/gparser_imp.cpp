@@ -79,10 +79,11 @@ std::optional<Tag> GparserImp::NextTag() {
 }
 
 std::optional<Token> GparserImp::NextToken() {
-	auto ch_op = NextChar();
+	auto ch_op = CurChar();
 	if (!ch_op.has_value())
 		return std::nullopt;
 
+	NextChar();
 	switch ((Token)ch_op.value()) {
 	case Token::kG:
 	case Token::kX:
@@ -100,7 +101,7 @@ std::optional<double> GparserImp::NextValue() {
 	std::string value;
 	std::optional<char> ch_op;
 
-	while ((ch_op = PeekChar()).has_value()) {
+	while ((ch_op = CurChar()).has_value()) {
 		auto ch = ch_op.value();
 		if (!std::isdigit(ch) && ch != '.')
 			break;
@@ -113,24 +114,20 @@ std::optional<double> GparserImp::NextValue() {
 
 void GparserImp::SkipSpace() {
 	std::optional<char> ch_op;
-	while ((ch_op = PeekChar()).has_value() && std::isspace(ch_op.value())) {
+	while ((ch_op = CurChar()).has_value() && std::isspace(ch_op.value())) {
 		NextChar();
 	}
 }
 
-inline std::optional<char> GparserImp::NextChar() {
-	auto ch_op = PeekChar();
-
-	if (!ch_op.has_value())
-		return std::nullopt;
-
-	++cur_line_cursor_;
-	return ch_op;
-}
-
-inline std::optional<char> GparserImp::PeekChar() {
+inline std::optional<char> GparserImp::CurChar() {
 	if (cur_line_cursor_ == cur_line_str_.size())
 		return std::nullopt;
 
 	return cur_line_str_[cur_line_cursor_];
+}
+
+inline std::optional<char> GparserImp::NextChar() {
+	++cur_line_cursor_;
+	assert(cur_line_cursor_ <= cur_line_str_.size());
+	return cur_line_cursor_ == cur_line_str_.size() ? std::nullopt : std::optional<char>(cur_line_str_[cur_line_cursor_]);
 }

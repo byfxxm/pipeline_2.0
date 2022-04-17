@@ -17,15 +17,15 @@ private:
 	std::optional<Token> NextToken();
 	std::optional<double> NextValue();
 	void SkipSpace();
+	std::optional<char> CurChar();
 	std::optional<char> NextChar();
-	std::optional<char> PeekChar();
 
 private:
 	static const std::unordered_map<std::string, ProcessFunc> kProcessFuncs;
 	std::ifstream fin_;
-	int line_no_{ 0 };
+	size_t line_no_{ 0 };
 	std::string cur_line_str_;
-	int cur_line_cursor_{ 0 };
+	size_t cur_line_cursor_{ 0 };
 	GProcesser* g_processer_{ nullptr };
 	std::string last_motion_;
 };
