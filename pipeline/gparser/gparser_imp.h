@@ -2,14 +2,15 @@
 #include "gparser.h"
 
 class GparserImp {
+private:
+	using Line = std::optional<std::vector<Tag>>;
+	using ProcessFunc = void(GProcesser::*)(int, Tag*, int);
+	static const std::unordered_map<std::string, ProcessFunc> kProcessFuncs;
+
 public:
 	GparserImp(const std::filesystem::path&, GProcesser*);
 	~GparserImp();
 	void Parse();
-
-private:
-	using Line = std::optional<std::vector<Tag>>;
-	using ProcessFunc = void(GProcesser::*)(int, Tag*, int);
 
 private:
 	Line NextLine();
@@ -21,7 +22,6 @@ private:
 	std::optional<char> NextChar();
 
 private:
-	static const std::unordered_map<std::string, ProcessFunc> kProcessFuncs;
 	std::ifstream fin_;
 	size_t line_no_{ 0 };
 	std::string cur_line_str_;
