@@ -104,6 +104,13 @@ std::optional<double> GparserImp::NextValue() {
 	return value.empty() ? std::nullopt : std::optional<double>(std::stod(value));
 }
 
+void GparserImp::SkipSpace() {
+	std::optional<char> ch_op;
+	while ((ch_op = PeekChar()).has_value() && std::isspace(ch_op.value())) {
+		NextChar();
+	}
+}
+
 inline std::optional<char> GparserImp::NextChar() {
 	auto ch_op = PeekChar();
 
@@ -119,11 +126,4 @@ inline std::optional<char> GparserImp::PeekChar() {
 		return std::nullopt;
 
 	return cur_line_str_[cur_line_cursor_];
-}
-
-void GparserImp::SkipSpace() {
-	std::optional<char> ch_op;
-	while ((ch_op = PeekChar()).has_value() && std::isspace(ch_op.value())) {
-		NextChar();
-	}
 }
