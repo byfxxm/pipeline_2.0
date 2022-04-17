@@ -27,4 +27,5 @@ private:
 	std::string cur_line_str_;
 	int cur_line_cursor_{ 0 };
 	GProcesser* g_processer_{ nullptr };
+	std::string last_motion_;
 };

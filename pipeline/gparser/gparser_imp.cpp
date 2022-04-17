@@ -25,13 +25,21 @@ void GparserImp::Parse() {
 			break;
 
 		auto line = line_op.value();
+		bool has_called = false;
 		for (const auto& it : line) {
 			std::stringstream tag;
 			tag << (char)it.token << it.value;
 			auto tag_it = kProcessFuncs.find(tag.str());
-			if (tag_it != kProcessFuncs.end())
+			if (tag_it != kProcessFuncs.end()) {
 				(g_processer_->*tag_it->second)(line_no_, line.data(), line.size());
+				has_called = true;
+				last_motion_ = tag.str();
+				break;
+			}
 		}
+
+		if (!has_called)
+			(g_processer_->*kProcessFuncs.find(last_motion_)->second)(line_no_, line.data(), line.size());
 	}
 }
 
