@@ -1,7 +1,7 @@
 #pragma once
 #include "g_processer_derive.h"
 
-class GparserWorkerImp :public Worker {
+class GparserWorkerImp : public Worker {
 public:
 	virtual ~GparserWorkerImp() override = default;
 	virtual void Do(Code*) override;
