@@ -7,7 +7,9 @@ public:
 	virtual void Do(Code*) override;
 	bool LoadFile(const char*);
 	void UnloadFile();
+	void SetGProcesser(GProcesser*);
 
 private:
 	GReader* reader_{ nullptr };
+	GProcesser* g_processer_{ nullptr };
 };
