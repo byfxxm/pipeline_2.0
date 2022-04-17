@@ -1,5 +1,6 @@
 #pragma once
 
+class GReader;
 class GparserWorker :public Worker {
 public:
 	virtual ~GparserWorker() override = default;
@@ -8,5 +9,5 @@ public:
 	void UnloadFile();
 
 private:
-	std::ifstream fin_;
+	GReader* reader_{ nullptr };
 };

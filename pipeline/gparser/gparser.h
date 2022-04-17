@@ -8,22 +8,23 @@
 #endif
 
 enum class Token {
-	kX,
-	kY,
-	kZ,
+	kG = 'G',
+	kX = 'X',
+	kY = 'Y',
+	kZ = 'Z',
+};
+
+struct Tag {
+	Token token;
+	double value;
 };
 
 class Command {
 public:
-	struct Data {
-		Token token;
-		double value;
-	};
-
-	virtual void G0(Data*, int) = 0;
-	virtual void G1(Data*, int) = 0;
-	virtual void G2(Data*, int) = 0;
-	virtual void G3(Data*, int) = 0;
+	virtual void G0(Tag*, int) = 0;
+	virtual void G1(Tag*, int) = 0;
+	virtual void G2(Tag*, int) = 0;
+	virtual void G3(Tag*, int) = 0;
 };
 
 extern "C" {

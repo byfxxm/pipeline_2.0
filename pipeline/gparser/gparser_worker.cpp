@@ -1,25 +1,31 @@
 #include "pch.h"
+#include "gparser.h"
 #include "gparser_worker.h"
+#include "g_reader.h"
 
 void GparserWorker::Do(Code*) {
-	std::string line;
-	std::getline(fin_, line);
-	
-	for (auto c : line) {
-		std::cout << c << std::endl;
+	try {
+		while (reader_->NextLine().has_value());
 	}
+	catch (const char* err) {
+		std::cout << err << std::endl;
+	}
+
+	Write(nullptr);
 }
 
 bool GparserWorker::LoadFile(const char* file) {
-	if (!std::filesystem::is_regular_file(std::filesystem::path(file)))
+	std::filesystem::path path(file);
+	if (!std::filesystem::is_regular_file(path))
 		return false;
 
-	fin_.open(file);
-	assert(fin_.is_open());
+	delete reader_;
+	reader_ = new GReader(path);
 	return true;
 }
 
 void GparserWorker::UnloadFile() {
-	if (fin_.is_open())
-		fin_.close();
+	delete reader_;
+	reader_ = nullptr;
 }
+

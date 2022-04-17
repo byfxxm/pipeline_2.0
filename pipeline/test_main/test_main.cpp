@@ -47,8 +47,8 @@ public:
 int main()
 {
 	auto pipeline = pipeline_create();
-
 	auto gparser = gparser_create();
+	gparser_load_file(gparser, "test1.nc");
 	WorkerMiddle workers[10];
 
 	pipeline_add_worker(pipeline, gparser);
