@@ -38,12 +38,12 @@ void GparserImp::Parse() {
 GparserImp::Line GparserImp::NextLine() {
 	std::optional<std::vector<Tag>> ret;
 
-	std::getline(fin_, cur_line_str_);
-	if (fin_.gcount() == 0)
+	if (fin_.eof())
 		return ret;
 
 	++line_no_;
 	cur_line_cursor_ = 0;
+	std::getline(fin_, cur_line_str_);
 
 	while (1) {
 		auto next_tag = NextTag();
