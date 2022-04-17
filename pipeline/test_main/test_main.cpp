@@ -47,11 +47,11 @@ public:
 int main()
 {
 	auto pipeline = pipeline_create();
-	auto gparser = gworker_create();
-	gworker_load_file(gparser, "test1.nc");
+	auto gworker = gworker_create();
+	gworker_load_file(gworker, "test1.nc");
 	WorkerMiddle workers[10];
 
-	pipeline_add_worker(pipeline, gparser);
+	pipeline_add_worker(pipeline, gworker);
 	for (auto& worker : workers)
 		pipeline_add_worker(pipeline, &worker);
 
@@ -79,7 +79,7 @@ int main()
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();
 	pipeline_delete(pipeline);
-	gworker_delete(gparser);
+	gworker_delete(gworker);
 
 	return 0;
 }

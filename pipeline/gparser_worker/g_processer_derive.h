@@ -8,5 +8,5 @@ public:
 	virtual void G3(int, Tag*, int) override;
 
 private:
-	void Print(const std::string&, int, Tag*, int);
+	void Print(int, Tag*, int);
 };
