@@ -6,11 +6,15 @@ public:
 	GReader(const std::filesystem::path&);
 	~GReader();
 	std::optional<std::vector<Tag>> NextLine();
+	int GetCurLineNo() const;
+
+private:
 	std::optional<Tag> NextTag();
 	std::optional<Token> NextToken();
 	std::optional<double> NextValue();
 	void SkipSpace();
-	int GetCurLineNo() const;
+	std::optional<char> NextChar();
+	std::optional<char> PeekChar();
 
 private:
 	std::ifstream fin_;

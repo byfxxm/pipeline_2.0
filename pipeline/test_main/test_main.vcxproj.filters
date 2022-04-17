@@ -25,8 +25,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test1.nc">
+    <Text Include="test1.nc">
       <Filter>test</Filter>
-    </None>
+    </Text>
   </ItemGroup>
 </Project>

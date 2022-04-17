@@ -15,16 +15,16 @@ void GparserWorker::Do(Code*) {
 				if (it.token == Token::kG) {
 					switch ((int)it.value) {
 					case 0:
-						g_processer_->G0(line.data(), line.size());
+						g_processer_ && (g_processer_->G0(line.data(), line.size()), 0);
 						break;
 					case 1:
-						g_processer_->G1(line.data(), line.size());
+						g_processer_ && (g_processer_->G1(line.data(), line.size()), 0);
 						break;
 					case 2:
-						g_processer_->G2(line.data(), line.size());
+						g_processer_ && (g_processer_->G2(line.data(), line.size()), 0);
 						break;
 					case 3:
-						g_processer_->G3(line.data(), line.size());
+						g_processer_ && (g_processer_->G3(line.data(), line.size()), 0);
 						break;
 					default:
 						break;

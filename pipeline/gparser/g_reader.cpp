@@ -13,11 +13,15 @@ GReader::~GReader() {
 std::optional<std::vector<Tag>> GReader::NextLine() {
 	std::optional<std::vector<Tag>> ret;
 	++cur_line_no_;
+	std::getline(fin_, cur_line_str_);
 
 	while (1) {
 		auto next_tag = NextTag();
 		if (!next_tag.has_value())
 			break;
+
+		if (!ret.has_value())
+			ret.emplace();
 		ret.value().push_back(next_tag.value());
 	}
 
@@ -32,45 +36,66 @@ std::optional<Tag> GReader::NextTag() {
 	auto value = NextValue();
 
 	if (!token.has_value() || !value.has_value())
-		return ret;
+		return std::nullopt;
 
-	ret.emplace(token.value(), value.value());
-	return ret;
+	return Tag(token.value(), value.value());
 }
 
 std::optional<Token> GReader::NextToken() {
-	std::optional<Token> ret;
+	auto ch_op = NextChar();
+	if (!ch_op.has_value())
+		return std::nullopt;
 
-	switch ((Token)cur_line_str_[cur_line_cursor_]) {
+	switch ((Token)ch_op.value()) {
 	case Token::kG:
 	case Token::kX:
 	case Token::kY:
 	case Token::kZ:
-		ret.emplace((Token)cur_line_str_[cur_line_cursor_++]);
-		break;
+		return (Token)ch_op.value();
 	default:
 		break;
 	}
 
-	return ret;
+	return std::nullopt;
 }
 
 std::optional<double> GReader::NextValue() {
-	std::optional<double> ret;
 	std::string value;
+	std::optional<char> ch_op;
 
-	while (std::isdigit(cur_line_str_[cur_line_cursor_]) || cur_line_str_[cur_line_cursor_] == '.') {
-		value.push_back(cur_line_str_[cur_line_cursor_]);
-		++cur_line_cursor_;
+	while ((ch_op = PeekChar()).has_value()) {
+		auto ch = ch_op.value();
+		if (!std::isdigit(ch) && ch != '.')
+			break;
+		value.push_back(ch);
+		NextChar();
 	}
 
-	ret = std::stod(value);
-	return ret;
+	return value.empty() ? std::nullopt : std::optional<double>(std::stod(value));
+}
+
+inline std::optional<char> GReader::NextChar() {
+	auto ch_op = PeekChar();
+
+	if (!ch_op.has_value())
+		return std::nullopt;
+
+	++cur_line_cursor_;
+	return ch_op;
+}
+
+inline std::optional<char> GReader::PeekChar() {
+	if (cur_line_cursor_ == cur_line_str_.size())
+		return std::nullopt;
+
+	return cur_line_str_[cur_line_cursor_];
 }
 
 void GReader::SkipSpace() {
-	while (std::isspace(cur_line_str_[cur_line_cursor_]))
-		++cur_line_cursor_;
+	std::optional<char> ch_op;
+	while ((ch_op = PeekChar()).has_value() && std::isspace(ch_op.value())) {
+		NextChar();
+	}
 }
 
 int GReader::GetCurLineNo() const {

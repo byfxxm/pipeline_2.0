@@ -153,7 +153,9 @@
     <ClInclude Include="ring_buffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="test1.nc" />
+    <Text Include="test1.nc">
+      <FileType>Document</FileType>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

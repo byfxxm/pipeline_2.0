@@ -44,6 +44,30 @@ public:
 	}
 };
 
+class GProcesserImp : public GProcesser {
+public:
+	virtual void G0(Tag* tags, int count) {
+		std::cout << "G0 ";
+		for (int i = 0; i < count; ++i) {
+			std::cout << (char)tags[i].token << tags[i].value << " ";
+		}
+		std::cout << std::endl;
+	}
+	virtual void G1(Tag* tags, int count) = 0 {
+		std::cout << "G1 ";
+		for (int i = 0; i < count; ++i) {
+			std::cout << (char)tags[i].token << tags[i].value << " ";
+		}
+		std::cout << std::endl;
+	}
+	virtual void G2(Tag*, int) = 0 {
+
+	}
+	virtual void G3(Tag*, int) = 0 {
+
+	}
+};
+
 int main()
 {
 	auto pipeline = pipeline_create();
