@@ -7,8 +7,7 @@ void GparserWorkerImp::Do(Code*) {
 }
 
 bool GparserWorkerImp::LoadFile(const char* file) {
-	std::filesystem::path path(file);
-	if (!std::filesystem::is_regular_file(path))
+	if (!std::filesystem::is_regular_file(std::filesystem::path(file)))
 		return false;
 
 	gparser_delete(gparser_);
