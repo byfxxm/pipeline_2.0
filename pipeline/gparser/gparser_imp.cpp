@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "g_reader.h"
+#include "gparser_imp.h"
 
 GReader::GReader(const std::filesystem::path& path) {
 	fin_.open(path);

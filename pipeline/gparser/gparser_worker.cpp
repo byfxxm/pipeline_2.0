@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "gparser.h"
 #include "gparser_worker.h"
-#include "g_reader.h"
+#include "gparser_imp.h"
 
 void GparserWorker::Do(Code*) {
 	try {
