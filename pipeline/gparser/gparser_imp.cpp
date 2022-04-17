@@ -30,15 +30,20 @@ void GparserImp::Parse() {
 			tag << (char)it.token << it.value;
 			auto tag_it = kProcessFuncs.find(tag.str());
 			if (tag_it != kProcessFuncs.end())
-				(g_processer_->*tag_it->second)(cur_line_no_, line.data(), line.size());
+				(g_processer_->*tag_it->second)(line_no_, line.data(), line.size());
 		}
 	}
 }
 
 GparserImp::Line GparserImp::NextLine() {
 	std::optional<std::vector<Tag>> ret;
-	++cur_line_no_;
+
 	std::getline(fin_, cur_line_str_);
+	if (fin_.gcount() == 0)
+		return ret;
+
+	++line_no_;
+	cur_line_cursor_ = 0;
 
 	while (1) {
 		auto next_tag = NextTag();

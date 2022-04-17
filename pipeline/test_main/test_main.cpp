@@ -7,14 +7,14 @@
 #include <chrono>
 #include "ring_buffer.h"
 #include "../pipeline/pipeline.h"
-#include "../gparser/gparser.h"
+#include "../gparser_worker/gparser_worker.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/pipeline.lib")
-#pragma comment(lib, "../Debug/gparser.lib")
+#pragma comment(lib, "../Debug/gparser_worker.lib")
 #else
 #pragma comment(lib, "../Release/pipeline.lib")
-#pragma comment(lib, "../Release/gparser.lib")
+#pragma comment(lib, "../Release/gparser_worker.lib")
 #endif
 
 class Fifo final :public OutputSwitch {
@@ -44,35 +44,11 @@ public:
 	}
 };
 
-class GProcesserImp : public GProcesser {
-public:
-	virtual void G0(Tag* tags, int count) {
-		std::cout << "G0 ";
-		for (int i = 0; i < count; ++i) {
-			std::cout << (char)tags[i].token << tags[i].value << " ";
-		}
-		std::cout << std::endl;
-	}
-	virtual void G1(Tag* tags, int count) = 0 {
-		std::cout << "G1 ";
-		for (int i = 0; i < count; ++i) {
-			std::cout << (char)tags[i].token << tags[i].value << " ";
-		}
-		std::cout << std::endl;
-	}
-	virtual void G2(Tag*, int) = 0 {
-
-	}
-	virtual void G3(Tag*, int) = 0 {
-
-	}
-};
-
 int main()
 {
 	auto pipeline = pipeline_create();
-	auto gparser = gparser_create();
-	gparser_load_file(gparser, "test1.nc");
+	auto gparser = gworker_create();
+	gworker_load_file(gparser, "test1.nc");
 	WorkerMiddle workers[10];
 
 	pipeline_add_worker(pipeline, gparser);
@@ -103,7 +79,7 @@ int main()
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();
 	pipeline_delete(pipeline);
-	gparser_delete(gparser);
+	gworker_delete(gparser);
 
 	return 0;
 }

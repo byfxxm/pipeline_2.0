@@ -23,7 +23,7 @@ private:
 private:
 	static const std::unordered_map<std::string, ProcessFunc> kProcessFuncs;
 	std::ifstream fin_;
-	int cur_line_no_{ 0 };
+	int line_no_{ 0 };
 	std::string cur_line_str_;
 	int cur_line_cursor_{ 0 };
 	GProcesser* g_processer_{ nullptr };

@@ -31,7 +31,7 @@ extern "C"
 {
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
-	PIPELINE_API void pipeline_add_worker(void*, Worker*);
+	PIPELINE_API void pipeline_add_worker(void*, void*);
 	PIPELINE_API void pipeline_start_async(void*);
 	PIPELINE_API void pipeline_stop_async(void*);
 	PIPELINE_API void pipeline_wait_for_idle(void*);

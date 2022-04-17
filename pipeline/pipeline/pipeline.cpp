@@ -10,8 +10,8 @@ void pipeline_delete(void* p) {
 	delete (PipelineImp*)p;
 }
 
-void pipeline_add_worker(void* p, Worker* worker) {
-	return ((PipelineImp*)p)->AddWorker(worker);
+void pipeline_add_worker(void* p, void* worker) {
+	return ((PipelineImp*)p)->AddWorker((Worker*)worker);
 }
 
 void pipeline_start_async(void* p) {

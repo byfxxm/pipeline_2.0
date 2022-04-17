@@ -9,5 +9,8 @@
 
 // 添加要在此处预编译的标头
 #include "framework.h"
+#include <filesystem>
+#include "../pipeline/pipeline.h"
+#include "../gparser/gparser.h"
 
 #endif //PCH_H
