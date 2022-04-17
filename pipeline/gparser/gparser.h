@@ -20,10 +20,10 @@ struct Tag {
 
 class GProcesser {
 public:
-	virtual void G0(int, Tag*, int) = 0;
-	virtual void G1(int, Tag*, int) = 0;
-	virtual void G2(int, Tag*, int) = 0;
-	virtual void G3(int, Tag*, int) = 0;
+	virtual void G0(size_t, Tag*, size_t) = 0;
+	virtual void G1(size_t, Tag*, size_t) = 0;
+	virtual void G2(size_t, Tag*, size_t) = 0;
+	virtual void G3(size_t, Tag*, size_t) = 0;
 };
 
 extern "C" {

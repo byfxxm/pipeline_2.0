@@ -4,7 +4,7 @@
 class GparserImp {
 private:
 	using Line = std::optional<std::vector<Tag>>;
-	using ProcessFunc = void(GProcesser::*)(int, Tag*, int);
+	using ProcessFunc = void(GProcesser::*)(size_t, Tag*, size_t);
 	static const std::unordered_map<std::string, ProcessFunc> kProcessFuncs;
 
 public:
