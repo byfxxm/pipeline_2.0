@@ -120,14 +120,11 @@ void GparserImp::SkipSpace() {
 }
 
 inline std::optional<char> GparserImp::CurChar() {
-	if (cur_line_cursor_ == cur_line_str_.size())
-		return std::nullopt;
-
-	return cur_line_str_[cur_line_cursor_];
+	assert(cur_line_cursor_ <= cur_line_str_.size());
+	return cur_line_cursor_ == cur_line_str_.size() ? std::nullopt : std::optional<char>(cur_line_str_[cur_line_cursor_]);
 }
 
 inline std::optional<char> GparserImp::NextChar() {
 	++cur_line_cursor_;
-	assert(cur_line_cursor_ <= cur_line_str_.size());
-	return cur_line_cursor_ == cur_line_str_.size() ? std::nullopt : std::optional<char>(cur_line_str_[cur_line_cursor_]);
+	return CurChar();
 }
