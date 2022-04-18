@@ -1,6 +1,17 @@
 #include "pch.h"
 #include "gparser_imp.h"
 
+GLine::GLine(const std::string& line_str) : str_(line_str) {}
+
+inline std::optional<char> GLine::Current() {
+	assert(cursor_ <= str_.size());
+	return cursor_ == str_.size() ? std::nullopt : std::optional<char>(str_[cursor_]);
+}
+
+inline void GLine::Next() {
+	++cursor_;
+}
+
 const std::unordered_map<std::string, GparserImp::ProcessFunc> GparserImp::kProcessFuncs = {
 	{"G0", &GProcesser::G0},
 	{"G1", &GProcesser::G1},
@@ -43,13 +54,15 @@ void GparserImp::Parse() {
 	}
 }
 
-GparserImp::Line GparserImp::NextLine() {
+std::optional<std::vector<Tag>> GparserImp::NextLine() {
 	if (fin_.eof())
 		return std::nullopt;
 
 	++line_no_;
-	cur_line_cursor_ = 0;
-	std::getline(fin_, cur_line_str_);
+	std::string line;
+	std::getline(fin_, line);
+	g_line_.~GLine();
+	new(&g_line_) GLine(line);
 	std::optional<std::vector<Tag>> ret;
 
 	while (1) {
@@ -79,11 +92,11 @@ std::optional<Tag> GparserImp::NextTag() {
 }
 
 std::optional<Token> GparserImp::NextToken() {
-	auto ch_op = CurChar();
+	auto ch_op = g_line_.Current();
 	if (!ch_op.has_value())
 		return std::nullopt;
 
-	NextChar();
+	g_line_.Next();
 	switch ((Token)ch_op.value()) {
 	case Token::kG:
 	case Token::kX:
@@ -101,12 +114,12 @@ std::optional<double> GparserImp::NextValue() {
 	std::string value;
 	std::optional<char> ch_op;
 
-	while ((ch_op = CurChar()).has_value()) {
+	while ((ch_op = g_line_.Current()).has_value()) {
 		auto ch = ch_op.value();
 		if (!std::isdigit(ch) && ch != '.')
 			break;
 		value.push_back(ch);
-		NextChar();
+		g_line_.Next();
 	}
 
 	return value.empty() ? std::nullopt : std::optional<double>(std::stod(value));
@@ -114,17 +127,7 @@ std::optional<double> GparserImp::NextValue() {
 
 void GparserImp::SkipSpace() {
 	std::optional<char> ch_op;
-	while ((ch_op = CurChar()).has_value() && std::isspace(ch_op.value())) {
-		NextChar();
+	while ((ch_op = g_line_.Current()).has_value() && std::isspace(ch_op.value())) {
+		g_line_.Next();
 	}
-}
-
-inline std::optional<char> GparserImp::CurChar() {
-	assert(cur_line_cursor_ <= cur_line_str_.size());
-	return cur_line_cursor_ == cur_line_str_.size() ? std::nullopt : std::optional<char>(cur_line_str_[cur_line_cursor_]);
-}
-
-inline std::optional<char> GparserImp::NextChar() {
-	++cur_line_cursor_;
-	return CurChar();
 }
