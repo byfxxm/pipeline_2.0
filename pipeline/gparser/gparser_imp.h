@@ -3,6 +3,7 @@
 
 class GLine {
 public:
+	GLine() = default;
 	GLine(const std::string&);
 	std::optional<char> Current();
 	void Next();
@@ -32,7 +33,7 @@ private:
 private:
 	std::ifstream fin_;
 	size_t line_no_{ 0 };
-	GLine g_line_{ std::string() };
+	GLine g_line_;
 	GProcesser* g_processer_{ nullptr };
 	std::string last_motion_;
 };
