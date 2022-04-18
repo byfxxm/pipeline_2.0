@@ -11,6 +11,7 @@
 #include "framework.h"
 #include <filesystem>
 #include <iostream>
+#include <cassert>
 #include "../pipeline/pipeline.h"
 #include "../gparser/gparser.h"
 

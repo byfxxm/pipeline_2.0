@@ -1,7 +1,12 @@
 #include "pch.h"
 #include "gparser_worker_imp.h"
 
+GparserWorkerImp::~GparserWorkerImp() {
+	UnloadFile();
+}
+
 void GparserWorkerImp::Do(Code*) {
+	assert(gparser_);
 	gparser_parse(gparser_);
 	Write(nullptr);
 }

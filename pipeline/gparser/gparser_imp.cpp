@@ -28,10 +28,6 @@ GparserImp::GparserImp(const std::filesystem::path& path, GProcesser* proc) : g_
 	assert(g_processer_);
 }
 
-GparserImp::~GparserImp() {
-	fin_.close();
-}
-
 void GparserImp::Parse() {
 	while (1) {
 		auto line_op = NextLine();

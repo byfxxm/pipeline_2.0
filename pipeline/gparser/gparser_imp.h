@@ -20,7 +20,6 @@ private:
 
 public:
 	GparserImp(const std::filesystem::path&, GProcesser*);
-	~GparserImp();
 	void Parse();
 
 private:
