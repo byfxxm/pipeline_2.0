@@ -9,6 +9,9 @@ inline std::optional<char> GLine::Current() {
 }
 
 inline void GLine::Next() {
+	if (!Current().has_value())
+		assert(0);
+
 	++cursor_;
 }
 
