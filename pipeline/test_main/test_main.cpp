@@ -63,7 +63,7 @@ int main()
 		Code* code = nullptr;
 		while (1) {
 			fifo.Read(code);
-			if (!code || (pipeline_is_idle(pipeline) && fifo.IsEmpty()))
+			if (!code)
 				break;
 			std::cout << code->value << std::endl;
 			delete code;
