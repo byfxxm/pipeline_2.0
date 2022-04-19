@@ -2,17 +2,17 @@
 #include "gworker_imp.h"
 
 GWORKER_BEGIN
-GparserWorkerImp::~GparserWorkerImp() {
+GworkerImp::~GworkerImp() {
 	UnloadFile();
 }
 
-void GparserWorkerImp::Do(pipeline::Code*) {
+void GworkerImp::Do(pipeline::Code*) {
 	assert(gparser_);
 	gparser_parse(gparser_);
 	Write(nullptr);
 }
 
-bool GparserWorkerImp::LoadFile(const char* file) {
+bool GworkerImp::LoadFile(const char* file) {
 	if (!std::filesystem::is_regular_file(std::filesystem::path(file)))
 		return false;
 
@@ -21,7 +21,7 @@ bool GparserWorkerImp::LoadFile(const char* file) {
 	return true;
 }
 
-void GparserWorkerImp::UnloadFile() {
+void GworkerImp::UnloadFile() {
 	gparser_delete(gparser_);
 	gparser_ = nullptr;
 }

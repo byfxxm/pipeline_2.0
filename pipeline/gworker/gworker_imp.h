@@ -2,9 +2,9 @@
 #include "g_processer_derive.h"
 
 namespace gworker {
-	class GparserWorkerImp : public pipeline::Worker {
+	class GworkerImp : public pipeline::Worker {
 	public:
-		virtual ~GparserWorkerImp() override;
+		virtual ~GworkerImp() override;
 		virtual void Do(pipeline::Code*) override;
 		bool LoadFile(const char*);
 		void UnloadFile();

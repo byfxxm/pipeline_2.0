@@ -4,7 +4,7 @@
 #include "../pipeline/code.h"
 
 GWORKER_BEGIN
-GProcesserDerive::GProcesserDerive(GparserWorkerImp& gworker) : gworker_(gworker) {}
+GProcesserDerive::GProcesserDerive(GworkerImp& gworker) : gworker_(gworker) {}
 
 void GProcesserDerive::G0(size_t line_no, gparser::Tag* tags, size_t count) {
 	//Print(line_no, tags, count);
