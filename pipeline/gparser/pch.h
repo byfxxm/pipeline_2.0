@@ -16,6 +16,8 @@
 #include <cassert>
 #include <iostream>
 #include <unordered_map>
-#include "gparser.h"
+
+namespace gparser {}
+using namespace gparser;
 
 #endif //PCH_H

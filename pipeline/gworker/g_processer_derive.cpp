@@ -3,7 +3,6 @@
 #include "gworker_imp.h"
 #include "../pipeline/code.h"
 
-GWORKER_BEGIN
 GProcesserDerive::GProcesserDerive(GworkerImp& gworker) : gworker_(gworker) {}
 
 void GProcesserDerive::G0(size_t line_no, gparser::Tag* tags, size_t count) {
@@ -67,4 +66,3 @@ void GProcesserDerive::Print(size_t line_no, gparser::Tag* tags, size_t count) {
 	}
 	std::cout << std::endl;
 }
-GWORKER_END

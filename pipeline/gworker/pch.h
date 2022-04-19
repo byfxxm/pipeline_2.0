@@ -15,7 +15,7 @@
 #include "../pipeline/pipeline.h"
 #include "../gparser/gparser.h"
 
-#define GWORKER_BEGIN namespace gworker {
-#define GWORKER_END }
+namespace gworker {}
+using namespace gworker;
 
 #endif //PCH_H

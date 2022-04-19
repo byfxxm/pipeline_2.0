@@ -1,23 +1,23 @@
 #pragma once
 #include "pipeline.h"
 
-PIPELINE_BEGIN
-class PipelineImp final {
-	friend class Worker;
+namespace pipeline {
+	class PipelineImp final {
+		friend class Worker;
 
-public:
-	~PipelineImp();
-	void AddWorker(Worker*);
-	void StartAsync();
-	void StopAsync();
-	void WaitForIdle();
-	void SetOutputSwitch(OutputSwitch* sw);
-	bool IsIdle();
+	public:
+		~PipelineImp();
+		void AddWorker(Worker*);
+		void StartAsync();
+		void StopAsync();
+		void WaitForIdle();
+		void SetOutputSwitch(OutputSwitch* sw);
+		bool IsIdle();
 
-private:
-	std::vector<Worker*> workers_;
-	volatile bool stop_{ false };
-	std::thread thread_;
-	OutputSwitch* output_switch_{ nullptr };
-};
-PIPELINE_END
+	private:
+		std::vector<Worker*> workers_;
+		volatile bool stop_{ false };
+		std::thread thread_;
+		OutputSwitch* output_switch_{ nullptr };
+	};
+}

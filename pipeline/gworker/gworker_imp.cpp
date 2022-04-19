@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "gworker_imp.h"
 
-GWORKER_BEGIN
 GworkerImp::~GworkerImp() {
 	UnloadFile();
 }
@@ -25,4 +24,3 @@ void GworkerImp::UnloadFile() {
 	gparser_delete(gparser_);
 	gparser_ = nullptr;
 }
-GWORKER_END

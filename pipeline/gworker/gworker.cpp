@@ -3,17 +3,17 @@
 #include "gworker_imp.h"
 
 void* gworker_create() {
-	return new gworker::GworkerImp();
+	return new GworkerImp();
 }
 
 void gworker_delete(void* p) {
-	delete (gworker::GworkerImp*)p;
+	delete (GworkerImp*)p;
 }
 
 bool gworker_load_file(void* p, const char* file) {
-	return ((gworker::GworkerImp*)p)->LoadFile(file);
+	return ((GworkerImp*)p)->LoadFile(file);
 }
 
 void gworker_unload_file(void* p) {
-	return ((gworker::GworkerImp*)p)->UnloadFile();
+	return ((GworkerImp*)p)->UnloadFile();
 }

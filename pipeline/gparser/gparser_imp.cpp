@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "gparser_imp.h"
 
-GPARSER_BEGIN
 GLine::GLine(const std::string& line_str) : str_(line_str) {}
 
 inline std::optional<char> GLine::Current() {
@@ -129,5 +128,3 @@ void GparserImp::SkipSpace() {
 		g_line_.Next();
 	}
 }
-
-GPARSER_END

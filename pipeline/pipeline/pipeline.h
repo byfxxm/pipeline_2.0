@@ -6,28 +6,26 @@
 #define PIPELINE_API __declspec(dllimport)
 #endif
 
-#define PIPELINE_BEGIN namespace pipeline {
-#define PIPELINE_END }
 #include "code.h"
 
-PIPELINE_BEGIN
-class PIPELINE_API Worker {
-public:
-	virtual ~Worker() = default;
-	virtual void Do(Code*) = 0;
-	void Write(Code*);
+namespace pipeline {
+	class PIPELINE_API Worker {
+	public:
+		virtual ~Worker() = default;
+		virtual void Do(Code*) = 0;
+		void Write(Code*);
 
-private:
-	friend class PipelineImp;
-	const PipelineImp* pipeline_{ nullptr };
-	size_t index_{ 0 };
-};
+	private:
+		friend class PipelineImp;
+		const PipelineImp* pipeline_{ nullptr };
+		size_t index_{ 0 };
+	};
 
-class OutputSwitch {
-public:
-	virtual void Write(Code*) = 0;
-};
-PIPELINE_END
+	class OutputSwitch {
+	public:
+		virtual void Write(Code*) = 0;
+	};
+}
 
 extern "C"
 {
