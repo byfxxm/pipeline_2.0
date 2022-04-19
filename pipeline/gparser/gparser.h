@@ -29,11 +29,10 @@ public:
 	virtual void G2(size_t, Tag*, size_t) = 0;
 	virtual void G3(size_t, Tag*, size_t) = 0;
 };
+GPARSER_END
 
 extern "C" {
-	GPARSER_API void* gparser_create(const char*, GProcesser*);
+	GPARSER_API void* gparser_create(const char*, gparser::GProcesser*);
 	GPARSER_API void gparser_delete(void*);
 	GPARSER_API void gparser_parse(void*);
 }
-
-GPARSER_END

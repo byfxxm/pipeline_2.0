@@ -12,5 +12,6 @@
 #include <vector>
 #include <cassert>
 #include <thread>
+#include "pipeline.h"
 
 #endif //PCH_H

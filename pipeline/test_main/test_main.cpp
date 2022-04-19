@@ -46,18 +46,18 @@ public:
 
 int main()
 {
-	auto pipeline = pipeline::pipeline_create();
-	auto gworker = gworker::gworker_create();
-	gworker::gworker_load_file(gworker, "test1.nc");
+	auto pipeline = pipeline_create();
+	auto gworker = gworker_create();
+	gworker_load_file(gworker, "test1.nc");
 	WorkerMiddle workers[10];
 
-	pipeline::pipeline_add_worker(pipeline, gworker);
+	pipeline_add_worker(pipeline, gworker);
 	for (auto& worker : workers)
-		pipeline::pipeline_add_worker(pipeline, &worker);
+		pipeline_add_worker(pipeline, &worker);
 
 	Fifo fifo;
-	pipeline::pipeline_set_output_switch(pipeline, &fifo);
-	pipeline::pipeline_start_async(pipeline);
+	pipeline_set_output_switch(pipeline, &fifo);
+	pipeline_start_async(pipeline);
 	
 	std::thread mcc([&]() {
 		pipeline::Code* code = nullptr;
@@ -77,14 +77,14 @@ int main()
 
 	std::thread th([&]() {
 		getchar();
-		pipeline::pipeline_stop_async(pipeline);
+		pipeline_stop_async(pipeline);
 		});
 	th.detach();
 
-	pipeline::pipeline_wait_for_idle(pipeline);
+	pipeline_wait_for_idle(pipeline);
 	mcc.join();
-	pipeline::pipeline_delete(pipeline);
-	gworker::gworker_delete(gworker);
+	pipeline_delete(pipeline);
+	gworker_delete(gworker);
 
 	return 0;
 }

@@ -1,43 +1,43 @@
 #pragma once
 #include "array_nd.h"
 
-namespace pipeline {
-	PIPELINE_API extern const int kAxesNum;
+PIPELINE_BEGIN
+PIPELINE_API extern const int kAxesNum;
 
-	struct Code {
-		enum class Id {
-			kMove,
-			kLine,
-			kArc,
-		};
-
-		virtual ~Code() = default;
-
-		Id id;
+struct Code {
+	enum class Id {
+		kMove,
+		kLine,
+		kArc,
 	};
 
-	struct Move :public Code {
-		Move() {
-			id = Id::kMove;
-		}
+	virtual ~Code() = default;
 
-		ArrayNd<double, 1> end{ kAxesNum };
-	};
+	Id id;
+};
 
-	struct Line :public Code {
-		Line() {
-			id = Id::kMove;
-		}
+struct Move :public Code {
+	Move() {
+		id = Id::kMove;
+	}
 
-		ArrayNd<double, 1> end{ kAxesNum };
-	};
+	ArrayNd<double, 1> end{ kAxesNum };
+};
 
-	struct Arc :public Code {
-		Arc() {
-			id = Id::kArc;
-		}
+struct Line :public Code {
+	Line() {
+		id = Id::kMove;
+	}
 
-		ArrayNd<double, 1> end{ kAxesNum };
-		ArrayNd<double, 1> center{ kAxesNum };
-	};
-}
+	ArrayNd<double, 1> end{ kAxesNum };
+};
+
+struct Arc :public Code {
+	Arc() {
+		id = Id::kArc;
+	}
+
+	ArrayNd<double, 1> end{ kAxesNum };
+	ArrayNd<double, 1> center{ kAxesNum };
+};
+PIPELINE_END

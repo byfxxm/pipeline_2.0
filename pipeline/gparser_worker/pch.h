@@ -12,8 +12,10 @@
 #include <filesystem>
 #include <iostream>
 #include <cassert>
-#include "gparser_worker.h"
 #include "../pipeline/pipeline.h"
 #include "../gparser/gparser.h"
+
+#define GWORKER_BEGIN namespace gworker {
+#define GWORKER_END }
 
 #endif //PCH_H
