@@ -25,5 +25,4 @@ void GworkerImp::UnloadFile() {
 	gparser_delete(gparser_);
 	gparser_ = nullptr;
 }
-
 GWORKER_END

@@ -67,5 +67,4 @@ void GProcesserDerive::Print(size_t line_no, gparser::Tag* tags, size_t count) {
 	}
 	std::cout << std::endl;
 }
-
 GWORKER_END

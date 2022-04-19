@@ -16,5 +16,4 @@ private:
 private:
 	GworkerImp& gworker_;
 };
-
 GWORKER_END
