@@ -62,16 +62,14 @@ std::optional<std::vector<Tag>> GparserImp::NextLine() {
 	std::getline(fin_, line);
 	g_line_.~GLine();
 	new(&g_line_) GLine(line);
-	std::optional<std::vector<Tag>> ret;
+	std::vector<Tag> ret;
 
 	while (1) {
 		auto next_tag = NextTag();
 		if (!next_tag.has_value())
 			break;
 
-		if (!ret.has_value())
-			ret.emplace();
-		ret.value().push_back(next_tag.value());
+		ret.push_back(next_tag.value());
 	}
 
 	return ret;
