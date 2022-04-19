@@ -17,14 +17,14 @@
 #pragma comment(lib, "../Release/gparser_worker.lib")
 #endif
 
-class Fifo final :public OutputSwitch {
+class Fifo final :public pipeline::OutputSwitch {
 public:
-	virtual void Write(Code* code) override {
+	virtual void Write(pipeline::Code* code) override {
 		while (!ring_buffer_.Write(code))
 			std::this_thread::yield();
 	}
 
-	void Read(Code*& code) {
+	void Read(pipeline::Code*& code) {
 		while (!ring_buffer_.Read(code))
 			std::this_thread::yield();
 	}
@@ -34,41 +34,41 @@ public:
 	}
 
 private:
-	RingBuffer<Code*, 1000> ring_buffer_;
+	RingBuffer<pipeline::Code*, 1000> ring_buffer_;
 };
 
-class WorkerMiddle :public Worker {
+class WorkerMiddle :public pipeline::Worker {
 public:
-	virtual void Do(Code* code) override {
+	virtual void Do(pipeline::Code* code) override {
 		Write(code);
 	}
 };
 
 int main()
 {
-	auto pipeline = pipeline_create();
-	auto gworker = gworker_create();
-	gworker_load_file(gworker, "test1.nc");
+	auto pipeline = pipeline::pipeline_create();
+	auto gworker = gworker::gworker_create();
+	gworker::gworker_load_file(gworker, "test1.nc");
 	WorkerMiddle workers[10];
 
-	pipeline_add_worker(pipeline, gworker);
+	pipeline::pipeline_add_worker(pipeline, gworker);
 	for (auto& worker : workers)
-		pipeline_add_worker(pipeline, &worker);
+		pipeline::pipeline_add_worker(pipeline, &worker);
 
 	Fifo fifo;
-	pipeline_set_output_switch(pipeline, &fifo);
-	pipeline_start_async(pipeline);
+	pipeline::pipeline_set_output_switch(pipeline, &fifo);
+	pipeline::pipeline_start_async(pipeline);
 	
 	std::thread mcc([&]() {
-		Code* code = nullptr;
+		pipeline::Code* code = nullptr;
 		while (1) {
 			fifo.Read(code);
 			if (!code)
 				break;
 
 			std::cout << "------>goto: ";
-			for (int i = 0; i < kAxesNum; ++i) {
-				std::cout << ((Move*)code)->end(i) << " ";
+			for (int i = 0; i < pipeline::kAxesNum; ++i) {
+				std::cout << ((pipeline::Move*)code)->end(i) << " ";
 			}
 			std::cout << std::endl;
 			delete code;
@@ -77,14 +77,14 @@ int main()
 
 	std::thread th([&]() {
 		getchar();
-		pipeline_stop_async(pipeline);
+		pipeline::pipeline_stop_async(pipeline);
 		});
 	th.detach();
 
-	pipeline_wait_for_idle(pipeline);
+	pipeline::pipeline_wait_for_idle(pipeline);
 	mcc.join();
-	pipeline_delete(pipeline);
-	gworker_delete(gworker);
+	pipeline::pipeline_delete(pipeline);
+	gworker::gworker_delete(gworker);
 
 	return 0;
 }
