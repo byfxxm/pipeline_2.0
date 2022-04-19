@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "gparser_worker_imp.h"
+#include "gworker_imp.h"
 
 GWORKER_BEGIN
 GparserWorkerImp::~GparserWorkerImp() {

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "gparser_worker.h"
-#include "gparser_worker_imp.h"
+#include "gworker.h"
+#include "gworker_imp.h"
 
 void* gworker_create() {
 	return new gworker::GparserWorkerImp();

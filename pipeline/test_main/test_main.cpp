@@ -7,7 +7,7 @@
 #include <chrono>
 #include "ring_buffer.h"
 #include "../pipeline/pipeline.h"
-#include "../gparser_worker/gparser_worker.h"
+#include "../gworker/gworker.h"
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/pipeline.lib")
