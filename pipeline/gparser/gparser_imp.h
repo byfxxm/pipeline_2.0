@@ -34,5 +34,5 @@ private:
 	size_t line_no_{ 0 };
 	GLine g_line_;
 	GProcesser* g_processer_{ nullptr };
-	std::string last_motion_;
+	std::string last_motion_{ "G0" };
 };
