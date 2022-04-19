@@ -48,7 +48,7 @@ void GparserImp::Parse() {
 			}
 		}
 
-		if (!has_called)
+		if (!has_called && !line_op.value().empty())
 			(g_processer_->*kProcessFuncs.find(last_motion_)->second)(line_no_, line.data(), line.size());
 	}
 }
