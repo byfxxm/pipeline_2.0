@@ -40,4 +40,4 @@ namespace pipeline {
 		ArrayNd<double, 1> end{ kAxesNum };
 		ArrayNd<double, 1> center{ kAxesNum };
 	};
-};
+}

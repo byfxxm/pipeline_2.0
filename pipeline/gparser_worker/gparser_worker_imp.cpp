@@ -8,7 +8,7 @@ namespace gworker {
 
 	void GparserWorkerImp::Do(pipeline::Code*) {
 		assert(gparser_);
-		gparser_parse(gparser_);
+		gparser::gparser_parse(gparser_);
 		Write(nullptr);
 	}
 
@@ -16,13 +16,13 @@ namespace gworker {
 		if (!std::filesystem::is_regular_file(std::filesystem::path(file)))
 			return false;
 
-		gparser_delete(gparser_);
+		gparser::gparser_delete(gparser_);
 		gparser_ = gparser_create(file, &g_proc_der_);
 		return true;
 	}
 
 	void GparserWorkerImp::UnloadFile() {
-		gparser_delete(gparser_);
+		gparser::gparser_delete(gparser_);
 		gparser_ = nullptr;
 	}
 }
