@@ -13,4 +13,7 @@
 #include <cassert>
 #include <thread>
 
+namespace pipeline {};
+using namespace pipeline;
+
 #endif //PCH_H

@@ -65,7 +65,12 @@ int main()
 			fifo.Read(code);
 			if (!code)
 				break;
-			std::cout << code->value << std::endl;
+
+			std::cout << "------>goto: ";
+			for (int i = 0; i < kAxesNum; ++i) {
+				std::cout << ((Move*)code)->end(i) << " ";
+			}
+			std::cout << std::endl;
 			delete code;
 		}
 		});

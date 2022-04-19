@@ -10,5 +10,5 @@ public:
 
 private:
 	void* gparser_{ nullptr };
-	GProcesserDerive g_proc_der_;
+	GProcesserDerive g_proc_der_{ *this };
 };

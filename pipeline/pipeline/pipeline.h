@@ -6,9 +6,7 @@
 #define PIPELINE_API __declspec(dllimport)
 #endif
 
-struct Code {
-	int value;
-};
+#include "code.h"
 
 class PIPELINE_API Worker {
 public:

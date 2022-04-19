@@ -27,6 +27,12 @@
     <ClInclude Include="pipeline_imp.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="array_nd.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="code.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pipeline.cpp">
