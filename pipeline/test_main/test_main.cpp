@@ -67,7 +67,7 @@ int main()
 				break;
 
 			std::cout << "------>goto: ";
-			for (int i = 0; i < pipeline::kAxesNum; ++i) {
+			for (size_t i = 0; i < pipeline::kAxesNum; ++i) {
 				std::cout << ((pipeline::Move*)code)->End()(i) << " ";
 			}
 			std::cout << std::endl;

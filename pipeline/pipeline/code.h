@@ -3,10 +3,10 @@
 #include "pipeline.h"
 
 namespace pipeline {
-	PIPELINE_API extern const int kAxesNum;
+	PIPELINE_API extern const size_t kAxesNum;
 	class AxesDouble :public ArrayNd<double, 1> {
 	public:
-		AxesDouble(int axes_num = kAxesNum) :ArrayNd<double, 1>(axes_num) {}
+		AxesDouble(size_t axes_num = kAxesNum) :ArrayNd<double, 1>(axes_num) {}
 	};
 
 	class Code {
