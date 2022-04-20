@@ -16,7 +16,6 @@ namespace pipeline {
 
 	class Code {
 	public:
-
 		Code(CodeId id) :id_(id) {}
 		virtual ~Code() = default;
 		auto& Id() {
