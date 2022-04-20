@@ -22,7 +22,7 @@ void GProcesserDerive::G3(size_t line_no, gparser::Tag* tags, size_t count) {
 }
 
 void GProcesserDerive::Print(size_t line_no, gparser::Tag* tags, size_t count) {
-	std::cout << "line " << line_no << ": ";
+	std::cout << "line no." << line_no << ": ";
 	for (size_t i = 0; i < count; ++i) {
 		std::cout << (char)tags[i].token << tags[i].value << " ";
 	}
