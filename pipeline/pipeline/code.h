@@ -2,7 +2,7 @@
 #include "array_nd.h"
 
 namespace pipeline {
-	extern const int kAxesNum;
+	PIPELINE_API extern const int kAxesNum;
 
 	class AxesDouble :public ArrayNd<double, 1> {
 	public:
