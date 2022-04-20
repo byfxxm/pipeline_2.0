@@ -36,4 +36,5 @@ extern "C" {
 	PIPELINE_API void pipeline_wait_for_idle(void*);
 	PIPELINE_API void pipeline_set_output_switch(void*, pipeline::OutputSwitch*);
 	PIPELINE_API bool pipeline_is_idle(void*);
+	PIPELINE_API extern const int kAxesNum;
 }
