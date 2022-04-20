@@ -11,10 +11,10 @@
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/pipeline.lib")
-#pragma comment(lib, "../Debug/gparser_worker.lib")
+#pragma comment(lib, "../Debug/gworker.lib")
 #else
 #pragma comment(lib, "../Release/pipeline.lib")
-#pragma comment(lib, "../Release/gparser_worker.lib")
+#pragma comment(lib, "../Release/gworker.lib")
 #endif
 
 class Fifo final :public pipeline::OutputSwitch {
@@ -68,7 +68,7 @@ int main()
 
 			std::cout << "------>goto: ";
 			for (int i = 0; i < pipeline::kAxesNum; ++i) {
-				std::cout << ((pipeline::Move*)code)->end(i) << " ";
+				std::cout << ((pipeline::Move*)code)->End()(i) << " ";
 			}
 			std::cout << std::endl;
 			delete code;

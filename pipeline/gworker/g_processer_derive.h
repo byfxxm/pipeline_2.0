@@ -12,6 +12,7 @@ namespace gworker {
 
 	private:
 		void Print(size_t, gparser::Tag*, size_t);
+		pipeline::AxesDouble TagsToAxesDouble(gparser::Tag*, size_t);
 
 	private:
 		GworkerImp& gworker_;

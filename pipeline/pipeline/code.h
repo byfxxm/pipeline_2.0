@@ -3,41 +3,64 @@
 
 namespace pipeline {
 	PIPELINE_API extern const int kAxesNum;
+	class AxesDouble :public ArrayNd<double, 1> {
+	public:
+		AxesDouble(int axes_num = kAxesNum) :ArrayNd<double, 1>(axes_num) {}
+	};
 
-	struct Code {
-		enum class Id {
-			kMove,
-			kLine,
-			kArc,
-		};
+	enum class CodeId {
+		kMove,
+		kLine,
+		kArc,
+	};
 
+	class Code {
+	public:
+
+		Code(CodeId id) :id_(id) {}
 		virtual ~Code() = default;
-
-		Id id;
-	};
-
-	struct Move :public Code {
-		Move() {
-			id = Id::kMove;
+		auto& Id() {
+			return id_;
 		}
 
-		ArrayNd<double, 1> end{ kAxesNum };
+	private:
+		CodeId id_;
 	};
 
-	struct Line :public Code {
-		Line() {
-			id = Id::kMove;
+	class Move :public Code {
+	public:
+		Move(AxesDouble&& end) :Code(CodeId::kMove), end_(end) {}
+		auto& End() {
+			return end_;
 		}
 
-		ArrayNd<double, 1> end{ kAxesNum };
+	private:
+		AxesDouble end_;
 	};
 
-	struct Arc :public Code {
-		Arc() {
-			id = Id::kArc;
+	class Line :public Code {
+	public:
+		Line(AxesDouble&& end) :Code(CodeId::kLine), end_(end) {}
+		auto& End() {
+			return end_;
 		}
 
-		ArrayNd<double, 1> end{ kAxesNum };
-		ArrayNd<double, 1> center{ kAxesNum };
+	private:
+		AxesDouble end_;
+	};
+
+	class Arc :public Code {
+	public:
+		Arc(AxesDouble&& end, AxesDouble&& center) :Code(CodeId::kArc), end_(end), center_(center) {}
+		auto& End() {
+			return end_;
+		}
+		auto& Center() {
+			return center_;
+		}
+
+	private:
+		AxesDouble end_{ kAxesNum };
+		AxesDouble center_{ kAxesNum };
 	};
 }
