@@ -27,8 +27,7 @@ namespace pipeline {
 	};
 }
 
-extern "C"
-{
+extern "C" {
 	PIPELINE_API void* pipeline_create();
 	PIPELINE_API void pipeline_delete(void*);
 	PIPELINE_API void pipeline_add_worker(void*, void*);
