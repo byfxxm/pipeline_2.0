@@ -66,11 +66,14 @@ int main()
 			if (!code)
 				break;
 
-			std::cout << "------>goto: ";
-			for (size_t i = 0; i < pipeline::kAxesNum; ++i) {
-				std::cout << ((pipeline::Move*)code)->End()(i) << " ";
+			if (code->Id() == pipeline::CodeId::kMove || code->Id() == pipeline::CodeId::kLine) {
+				std::cout << "------>goto: ";
+				for (size_t i = 0; i < pipeline::kAxesNum; ++i) {
+					std::cout << ((pipeline::Move*)code)->End()(i) << " ";
+				}
+				std::cout << std::endl;
 			}
-			std::cout << std::endl;
+
 			delete code;
 		}
 		});
