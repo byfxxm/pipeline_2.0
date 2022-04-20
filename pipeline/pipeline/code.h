@@ -8,27 +8,27 @@ namespace pipeline {
 		AxesDouble(int axes_num = kAxesNum) :ArrayNd<double, 1>(axes_num) {}
 	};
 
-	enum class CodeId {
-		kMove,
-		kLine,
-		kArc,
-	};
-
 	class Code {
 	public:
-		Code(CodeId id) :id_(id) {}
+		enum class Id {
+			kMove,
+			kLine,
+			kArc,
+		};
+
+		Code(Id id) :code_id_(id) {}
 		virtual ~Code() = default;
-		auto& Id() {
-			return id_;
+		auto& CodeId() {
+			return code_id_;
 		}
 
 	private:
-		CodeId id_;
+		Id code_id_;
 	};
 
 	class Move :public Code {
 	public:
-		Move(AxesDouble&& end) :Code(CodeId::kMove), end_(end) {}
+		Move(AxesDouble&& end) :Code(Id::kMove), end_(end) {}
 		auto& End() {
 			return end_;
 		}
@@ -39,7 +39,7 @@ namespace pipeline {
 
 	class Line :public Code {
 	public:
-		Line(AxesDouble&& end) :Code(CodeId::kLine), end_(end) {}
+		Line(AxesDouble&& end) :Code(Id::kLine), end_(end) {}
 		auto& End() {
 			return end_;
 		}
@@ -50,7 +50,7 @@ namespace pipeline {
 
 	class Arc :public Code {
 	public:
-		Arc(AxesDouble&& end, AxesDouble&& center) :Code(CodeId::kArc), end_(end), center_(center) {}
+		Arc(AxesDouble&& end, AxesDouble&& center) :Code(Id::kArc), end_(end), center_(center) {}
 		auto& End() {
 			return end_;
 		}
