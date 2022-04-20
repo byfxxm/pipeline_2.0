@@ -3,7 +3,7 @@
 #include "gworker_imp.h"
 #include "../pipeline/code.h"
 
-GProcesserDerive::GProcesserDerive(GworkerImp& gworker) : gworker_(gworker) {}
+GProcesserDerive::GProcesserDerive(GworkerImp& gworker) :gworker_(gworker) {}
 
 void GProcesserDerive::G0(size_t line_no, gparser::Tag* tags, size_t count) {
 	gworker_.Write(new pipeline::Move(TagsToAxesDouble(tags, count)));
