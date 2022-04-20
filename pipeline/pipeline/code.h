@@ -60,7 +60,7 @@ namespace pipeline {
 		}
 
 	private:
-		AxesDouble end_{ kAxesNum };
-		AxesDouble center_{ kAxesNum };
+		AxesDouble end_;
+		AxesDouble center_;
 	};
 }
