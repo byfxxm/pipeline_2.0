@@ -77,12 +77,6 @@ void TestPipeline() {
 		}
 		});
 
-	std::thread th([&]() {
-		getchar();
-		pipeline_stop_async(pipeline);
-		});
-	th.detach();
-
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();
 	pipeline_delete(pipeline);
