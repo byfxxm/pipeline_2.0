@@ -44,8 +44,7 @@ public:
 	}
 };
 
-int main()
-{
+void TestPipeline() {
 	auto pipeline = pipeline_create();
 	auto gworker = gworker_create();
 	gworker_load_file(gworker, "test1.nc");
@@ -58,7 +57,7 @@ int main()
 	Fifo fifo;
 	pipeline_set_output_switch(pipeline, &fifo);
 	pipeline_start_async(pipeline);
-	
+
 	std::thread mcc([&]() {
 		pipeline::Code* code = nullptr;
 		while (1) {
@@ -88,6 +87,12 @@ int main()
 	mcc.join();
 	pipeline_delete(pipeline);
 	gworker_delete(gworker);
+}
+
+int main()
+{
+	while (1)
+		TestPipeline();
 
 	return 0;
 }
