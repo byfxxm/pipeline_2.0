@@ -2,7 +2,7 @@
 #include "g_processer_derive.h"
 
 namespace gworker {
-	class GworkerImp : public pipeline::Worker {
+	class GworkerImp :public pipeline::Worker {
 	public:
 		virtual ~GworkerImp() override;
 		virtual void Do(pipeline::Code*) override;

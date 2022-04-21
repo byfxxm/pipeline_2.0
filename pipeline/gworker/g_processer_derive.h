@@ -2,7 +2,7 @@
 
 namespace gworker {
 	class GworkerImp;
-	class GProcesserDerive : public gparser::GProcesser {
+	class GProcesserDerive :public gparser::GProcesser {
 	public:
 		GProcesserDerive(GworkerImp&);
 		virtual void G0(size_t, gparser::Tag*, size_t) override;
