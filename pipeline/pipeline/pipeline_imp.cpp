@@ -17,7 +17,9 @@ void PipelineImp::StartAsync() {
 	stop_ = false;
 	if (!workers_.empty()) {
 		thread_ = std::thread([this]() {
+			lock_.lock();
 			workers_[0]->Do(nullptr);
+			lock_.unlock();
 			});
 	}
 }

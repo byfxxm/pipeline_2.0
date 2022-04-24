@@ -23,6 +23,7 @@ namespace pipeline {
 		std::thread thread_;
 		OutputSwitch* output_switch_{ nullptr };
 		std::condition_variable cv_;
-		std::mutex mtx_;
+		std::mutex mutex_;
+		std::unique_lock<std::mutex> lock_{ mutex_, std::defer_lock };
 	};
 }

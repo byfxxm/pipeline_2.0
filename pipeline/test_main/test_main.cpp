@@ -44,13 +44,26 @@ public:
 	}
 };
 
+class FirstWorker :public pipeline::Worker {
+public:
+	virtual void Do(pipeline::Code* code) override {
+		while (1) {
+			Write(new pipeline::Line{ pipeline::AxesDouble() });
+		}
+	}
+};
+
 void TestPipeline() {
 	auto pipeline = pipeline_create();
-	auto gworker = gworker_create();
+#if 0
+	auto first = gworker_create();
 	gworker_load_file(gworker, "test1.nc");
+#else
+	auto first = new FirstWorker;
+#endif
 	WorkerMiddle workers[10];
 
-	pipeline_add_worker(pipeline, gworker);
+	pipeline_add_worker(pipeline, first);
 	for (auto& worker : workers)
 		pipeline_add_worker(pipeline, &worker);
 
@@ -77,17 +90,24 @@ void TestPipeline() {
 		}
 		});
 
+	std::thread pause([&]() {
+		while (1) {
+			getchar();
+			pipeline_pause(pipeline);
+			getchar();
+			pipeline_resume(pipeline);
+		}
+		});
+
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();
 	pipeline_delete(pipeline);
-	gworker_delete(gworker);
+	gworker_delete(first);
 }
 
 int main()
 {
-	while (1)
-		TestPipeline();
-
+	TestPipeline();
 	return 0;
 }
 
