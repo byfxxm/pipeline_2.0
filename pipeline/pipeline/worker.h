@@ -10,7 +10,7 @@ namespace pipeline {
 
 	private:
 		friend class PipelineImp;
-		const PipelineImp* pipeline_{ nullptr };
+		PipelineImp* pipeline_{ nullptr };
 		size_t index_{ 0 };
 	};
 

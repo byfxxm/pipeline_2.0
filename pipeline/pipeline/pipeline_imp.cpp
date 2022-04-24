@@ -38,3 +38,12 @@ void PipelineImp::SetOutputSwitch(OutputSwitch* sw) {
 bool PipelineImp::IsIdle() {
 	return !thread_.joinable();
 }
+
+void PipelineImp::Pause() {
+	pause_ = true;
+}
+
+void PipelineImp::Resume() {
+	pause_ = false;
+	cv_.notify_all();
+}

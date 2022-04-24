@@ -35,3 +35,11 @@ void pipeline_set_output_switch(void* p, pipeline::OutputSwitch* sw) {
 bool pipeline_is_idle(void* p) {
 	return ((PipelineImp*)p)->IsIdle();
 }
+
+void pipeline_pause(void* p) {
+	return ((PipelineImp*)p)->Pause();
+}
+
+void pipeline_resume(void* p) {
+	return ((PipelineImp*)p)->Resume();
+}

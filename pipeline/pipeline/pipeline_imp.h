@@ -13,11 +13,16 @@ namespace pipeline {
 		void WaitForIdle();
 		void SetOutputSwitch(OutputSwitch* sw);
 		bool IsIdle();
+		void Pause();
+		void Resume();
 
 	private:
 		std::vector<Worker*> workers_;
 		volatile bool stop_{ false };
+		volatile bool pause_{ false };
 		std::thread thread_;
 		OutputSwitch* output_switch_{ nullptr };
+		std::condition_variable cv_;
+		std::mutex mtx_;
 	};
 }

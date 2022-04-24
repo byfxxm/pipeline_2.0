@@ -13,6 +13,7 @@
 #include <cassert>
 #include <thread>
 #include <condition_variable>
+#include <mutex>
 
 namespace pipeline {}
 using namespace pipeline;
