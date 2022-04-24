@@ -12,6 +12,7 @@
 #include <vector>
 #include <cassert>
 #include <thread>
+#include <condition_variable>
 
 namespace pipeline {}
 using namespace pipeline;

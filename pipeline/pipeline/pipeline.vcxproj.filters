@@ -33,6 +33,9 @@
     <ClInclude Include="code.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="worker.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pipeline.cpp">
