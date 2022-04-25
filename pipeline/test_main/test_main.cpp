@@ -47,9 +47,11 @@ public:
 class FirstWorker :public pipeline::Worker {
 public:
 	virtual void Do(pipeline::Code* code) override {
-		while (1) {
+		for (int i = 0; i < 100000; ++i) {
 			Write(new pipeline::Line{ pipeline::AxesDouble() });
 		}
+
+		Write(code);
 	}
 };
 
@@ -98,6 +100,8 @@ void TestPipeline() {
 			pipeline_resume(pipeline);
 		}
 		});
+
+	pause.detach();
 
 	pipeline_wait_for_idle(pipeline);
 	mcc.join();

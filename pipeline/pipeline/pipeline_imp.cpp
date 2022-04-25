@@ -14,12 +14,11 @@ void PipelineImp::AddWorker(Worker* worker) {
 }
 
 void PipelineImp::StartAsync() {
-	stop_ = false;
-	if (!workers_.empty()) {
+	if (IsIdle() && !workers_.empty()) {
+		stop_ = false;
+		pause_ = false;
 		thread_ = std::thread([this]() {
-			lock_.lock();
 			workers_[0]->Do(nullptr);
-			lock_.unlock();
 			});
 	}
 }
@@ -47,5 +46,4 @@ void PipelineImp::Pause() {
 
 void PipelineImp::Resume() {
 	pause_ = false;
-	cv_.notify_all();
 }
