@@ -8,7 +8,6 @@ void Worker::Write(Code* code) {
 	if (index_ == pipeline_->workers_.size() - 1) {
 		while (pipeline_->pause_)
 			std::this_thread::yield();
-
 		if (pipeline_->output_switch_)
 			pipeline_->output_switch_->Write(code);
 		return;
