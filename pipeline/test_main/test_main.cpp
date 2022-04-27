@@ -17,7 +17,7 @@
 #pragma comment(lib, "../Release/gworker.lib")
 #endif
 
-class Fifo final :public pipeline::OutputSwitch {
+class Fifo final : public pipeline::OutputSwitch {
 public:
 	virtual void Write(pipeline::Code* code) override {
 		while (!ring_buffer_.Write(code))
@@ -37,14 +37,14 @@ private:
 	RingBuffer<pipeline::Code*, 1000> ring_buffer_;
 };
 
-class WorkerMiddle :public pipeline::Worker {
+class WorkerMiddle : public pipeline::Worker {
 public:
 	virtual void Do(pipeline::Code* code) override {
 		Write(code);
 	}
 };
 
-class FirstWorker :public pipeline::Worker {
+class FirstWorker : public pipeline::Worker {
 public:
 	virtual void Do(pipeline::Code* code) override {
 		for (int i = 0; i < 100000; ++i) {

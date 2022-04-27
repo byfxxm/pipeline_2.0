@@ -4,7 +4,7 @@
 
 namespace pipeline {
 	PIPELINE_API extern const size_t kAxesNum;
-	class AxesDouble :public ArrayNd<double, 1> {
+	class AxesDouble : public ArrayNd<double, 1> {
 	public:
 		AxesDouble(size_t axes_num = kAxesNum) :ArrayNd<double, 1>(axes_num) {}
 	};
@@ -27,7 +27,7 @@ namespace pipeline {
 		CodeId id_;
 	};
 
-	class Move :public Code {
+	class Move : public Code {
 	public:
 		Move(AxesDouble&& end) :Code(CodeId::kMove), end_(end) {}
 		auto& End() {
@@ -38,7 +38,7 @@ namespace pipeline {
 		AxesDouble end_;
 	};
 
-	class Line :public Code {
+	class Line : public Code {
 	public:
 		Line(AxesDouble&& end) :Code(CodeId::kLine), end_(end) {}
 		auto& End() {
@@ -49,7 +49,7 @@ namespace pipeline {
 		AxesDouble end_;
 	};
 
-	class Arc :public Code {
+	class Arc : public Code {
 	public:
 		Arc(AxesDouble&& end, AxesDouble&& center) :Code(CodeId::kArc), end_(end), center_(center) {}
 		auto& End() {
