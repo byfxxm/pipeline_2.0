@@ -57,9 +57,9 @@ public:
 
 void TestPipeline() {
 	auto pipeline = pipeline_create();
-#if 0
+#if 1
 	auto first = gworker_create();
-	gworker_load_file(gworker, "test1.nc");
+	gworker_load_file(first, "test1.nc");
 #else
 	auto first = new FirstWorker;
 #endif
