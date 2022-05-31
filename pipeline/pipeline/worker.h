@@ -1,5 +1,6 @@
 #pragma once
-#include "pipeline.h"
+
+struct Code;
 
 namespace pipeline {
 	class PIPELINE_API Worker {
