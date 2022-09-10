@@ -17,6 +17,7 @@ namespace pipeline {
 
 	class OutputSwitch {
 	public:
+		virtual ~OutputSwitch() = default;
 		virtual void Write(Code*) = 0;
 	};
 }
