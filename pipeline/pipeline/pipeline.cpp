@@ -2,7 +2,7 @@
 #include "pipeline.h"
 #include "pipeline_imp.h"
 
-const size_t pipeline::kAxesNum = 6;
+size_t pipeline::kAxesNum = 6;
 
 void* pipeline_create() {
 	return new PipelineImp();

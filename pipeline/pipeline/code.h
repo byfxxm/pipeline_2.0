@@ -1,9 +1,9 @@
 #pragma once
 #include "array_nd.h"
-#include "pipeline.h"
 
 namespace pipeline {
-	PIPELINE_API extern const size_t kAxesNum;
+	PIPELINE_API extern size_t kAxesNum;
+
 	class AxesDouble {
 	public:
 		AxesDouble(size_t axes_num = kAxesNum) : base_(axes_num) {}
@@ -25,6 +25,7 @@ namespace pipeline {
 	public:
 		Code(CodeId id) : id_(id) {}
 		virtual ~Code() = default;
+
 		auto& Id() {
 			return id_;
 		}
@@ -36,6 +37,7 @@ namespace pipeline {
 	class Move : public Code {
 	public:
 		Move(AxesDouble&& end) : Code(CodeId::kMove), end_(std::move(end)) {}
+
 		auto& End() {
 			return end_;
 		}
@@ -47,6 +49,7 @@ namespace pipeline {
 	class Line : public Code {
 	public:
 		Line(AxesDouble&& end) : Code(CodeId::kLine), end_(std::move(end)) {}
+
 		auto& End() {
 			return end_;
 		}
@@ -58,6 +61,7 @@ namespace pipeline {
 	class Arc : public Code {
 	public:
 		Arc(AxesDouble&& end, AxesDouble&& center) : Code(CodeId::kArc), end_(std::move(end)), center_(std::move(center)) {}
+
 		auto& End() {
 			return end_;
 		}
