@@ -1,6 +1,8 @@
 #pragma once
+#include <type_traits>
 
-template <typename T, size_t N>
+template <typename Ty, size_t Num>
+	requires (Num > 0)
 class RingBuffer {
 public:
 	void Reset() {
@@ -12,29 +14,41 @@ public:
 	}
 
 	bool IsFull() {
-		return (write_index_ + 1) % N == read_index_;
+		return Mod(write_index_ + 1) == read_index_;
 	}
 
-	bool Write(T t) {
+	template <class T>
+		requires std::same_as<Ty, std::decay_t<T>>
+	bool Write(T&& t) {
 		if (IsFull())
 			return false;
 
 		data_[write_index_] = t;
-		write_index_ = (write_index_ + 1) % N;
+		write_index_ = Mod(write_index_ + 1);
 		return true;
 	}
 
-	bool Read(T& t) {
+	template <class T>
+		requires std::same_as<Ty, std::decay_t<T>>
+	bool Read(T&& t) {
 		if (IsEmpty())
 			return false;
 
 		t = data_[read_index_];
-		read_index_ = (read_index_ + 1) % N;
+		read_index_ = Mod(read_index_ + 1);
 		return true;
+	}
+
+private:
+	size_t Mod(size_t num) {
+		if constexpr ((Num & (Num - 1)) == 0)
+			return (num & (Num - 1));
+		else
+			return (num % Num);
 	}
 
 private:
 	volatile size_t read_index_{ 0 };
 	volatile size_t write_index_{ 0 };
-	T data_[N];
+	Ty data_[Num];
 };
