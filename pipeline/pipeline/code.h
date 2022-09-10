@@ -4,9 +4,15 @@
 
 namespace pipeline {
 	PIPELINE_API extern const size_t kAxesNum;
-	class AxesDouble : public ArrayNd<double, 1> {
+	class AxesDouble {
 	public:
-		AxesDouble(size_t axes_num = kAxesNum) : ArrayNd<double, 1>(axes_num) {}
+		AxesDouble(size_t axes_num = kAxesNum) : base_(axes_num) {}
+
+		double& operator[](size_t index) {
+			return base_[index];
+		}
+
+		byfxxm::ArrayNd<double, 1> base_;
 	};
 
 	enum class CodeId {
@@ -29,7 +35,7 @@ namespace pipeline {
 
 	class Move : public Code {
 	public:
-		Move(AxesDouble&& end) : Code(CodeId::kMove), end_(end) {}
+		Move(AxesDouble&& end) : Code(CodeId::kMove), end_(std::move(end)) {}
 		auto& End() {
 			return end_;
 		}
@@ -40,7 +46,7 @@ namespace pipeline {
 
 	class Line : public Code {
 	public:
-		Line(AxesDouble&& end) : Code(CodeId::kLine), end_(end) {}
+		Line(AxesDouble&& end) : Code(CodeId::kLine), end_(std::move(end)) {}
 		auto& End() {
 			return end_;
 		}
@@ -51,7 +57,7 @@ namespace pipeline {
 
 	class Arc : public Code {
 	public:
-		Arc(AxesDouble&& end, AxesDouble&& center) : Code(CodeId::kArc), end_(end), center_(center) {}
+		Arc(AxesDouble&& end, AxesDouble&& center) : Code(CodeId::kArc), end_(std::move(end)), center_(std::move(center)) {}
 		auto& End() {
 			return end_;
 		}

@@ -35,13 +35,13 @@ pipeline::AxesDouble GProcesserDerive::TagsToAxesDouble(gparser::Tag* tags, size
 	for (size_t i = 0; i < count; ++i) {
 		switch (tags[i].token) {
 		case gparser::Token::kX:
-			ret(0) = tags[i].value;
+			ret[0] = tags[i].value;
 			break;
 		case gparser::Token::kY:
-			ret(1) = tags[i].value;
+			ret[1] = tags[i].value;
 			break;
 		case gparser::Token::kZ:
-			ret(2) = tags[i].value;
+			ret[2] = tags[i].value;
 			break;
 		default:
 			break;

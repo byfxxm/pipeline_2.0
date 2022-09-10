@@ -1,129 +1,154 @@
 #pragma once
-#include <type_traits>
-#include <cstring>
+#include <array>
 #include <cassert>
+#include <memory>
 
-/*
-* 多维数组
-* usage:
-*		ArrayNd<char, 3> arr(7, 8, 9); // 构建对象（元素类型为 char，维数是 3，内存初始化为 0xff，第一、第二、第三维度分别是 7、8、9）
-*		char c = arr(1, 2, 3); // 随机访问数组，参数个数等于维数时，返回引用
-*		char* d = arr(5); // 参数个数小于维数时，返回指针
-*		size_t e = arr[0]; // 获取第一维度
-*		arr.Reset(0xff); // 内存初始化，默认每个字节初始化为 0
-*/
-template <typename T, size_t N>
-class ArrayNd {
-public:
-	template <typename... Ts>
-	ArrayNd(Ts... ts) {
-		static_assert(N > 0);
-		static_assert(sizeof...(ts) == N);
-		EmplaceDim(0, ts...);
+namespace byfxxm {
+	/*
+	* 多维数组
+	* usage:
+	*		ArrayNd<char, 3> arr(7, 8, 9); // 构建对象（元素类型为 char，维数是 3，第一、第二、第三维度分别是 7、8、9）
+	*		char c = arr[1][2][3]; // 随机访问数组，参数个数等于维数时，返回引用
+	*		arr.Memset('z');	 // 内存初始化
+	*		ArrayNd<int, 2> arr1{{0, 1}, {2, 3, 4}}; // 支持初始化列表
+	*/
+	template <class Ty, size_t Num>
+		requires (Num > 0)
+	class ArrayNd final {
+	private:
+		template <class T, size_t N>
+		class ViewPtr final {
+		public:
+			ViewPtr(T* p, const size_t* shape, const size_t* factor) : ptr_(p), shape_(shape), factor_(factor) {
+				assert(ptr_);
+			}
 
-		for (auto i = 0; i < N; ++i) {
-			ele_cnt_ *= dim_[i];
-			factor_[i] = 1;
-			for (auto j = i + 1; j < N; ++j)
-				factor_[i] *= dim_[j];
+			const ViewPtr<T, N - 1> operator[](size_t index) const&& {
+				assert(index >= 0 && index < shape_[0]);
+				return ViewPtr<T, N - 1>(ptr_ + index * factor_[0], shape_ + 1, factor_ + 1);
+			}
+
+		private:
+			T* ptr_{ nullptr };
+			const size_t* shape_{ nullptr };
+			const size_t* factor_{ nullptr };
+		};
+
+		template <class T>
+		class ViewPtr<T, 1> final {
+		public:
+			ViewPtr(T* p, const size_t* shape, const size_t*) : ptr_(p), shape_(shape) {}
+
+			T& operator[](size_t index) const&& {
+				assert(index >= 0 && index < shape_[0]);
+				return ptr_[index];
+			}
+
+		private:
+			T* ptr_{ nullptr };
+			const size_t* shape_{ nullptr };
+		};
+
+	public:
+		template <class... Args>
+			requires (sizeof...(Args) == Num)
+		ArrayNd(Args&&... args) : count_((... * args)), shapes_{ static_cast<size_t>(args)... } {
+			elems_ = std::make_unique<Ty[]>(count_);
+			Memset(0);
+			InitializeFactors();
 		}
 
-		ele_ = new T[ele_cnt_];
-		Reset();
+		template <class T, size_t N>
+		struct InitializerList {
+			using type = std::initializer_list<typename InitializerList<T, N - 1>::type>;
+		};
+
+		template <class T>
+		struct InitializerList<T, 1> {
+			using type = std::initializer_list<T>;
+		};
+
+		template <class T, size_t N>
+		using InitializerList_t = InitializerList<T, N>::type;
+
+		ArrayNd(InitializerList_t<Ty, Num> list) {
+			InitializeShapes(list, 0);
+			count_ = 1;
+			for (auto it : shapes_)
+				count_ *= it;
+
+			elems_ = std::make_unique<Ty[]>(count_);
+			Memset(0);
+			InitializeFactors();
+			Assignment(list, 0, 0);
+		}
+
+		ArrayNd(const ArrayNd&) = delete;
+		ArrayNd(ArrayNd&&) noexcept = default;
+		ArrayNd& operator=(const ArrayNd&) = delete;
+		ArrayNd& operator=(ArrayNd&&) noexcept = default;
+
+		decltype(auto) operator[](size_t index) {
+			return ViewPtr<Ty, Num>(elems_.get(), &shapes_.front(), &factors_.front())[index];
+		}
+
+		void Memset(Ty val) {
+			assert(elems_);
+			for (size_t i = 0; i < count_; ++i)
+				elems_[i] = val;
+		}
+
+		template <size_t N>
+			requires (N < Num)
+		auto Shape() {
+			return shapes_[N];
+		}
+
+	private:
+		void InitializeFactors() {
+			for (size_t i = 0; i < Num; ++i) {
+				factors_[i] = 1;
+				for (size_t j = i + 1; j < Num; ++j)
+					factors_[i] *= shapes_[j];
+			}
+		}
+
+		void InitializeShapes(std::initializer_list<Ty> list, size_t index) {
+			auto list_size = list.size();
+			if (list_size > shapes_[index])
+				shapes_[index] = list_size;
+		}
+
+		template <class T>
+		void InitializeShapes(T&& list, size_t index) {
+			auto list_size = list.size();
+			if (list_size > shapes_[index])
+				shapes_[index] = list_size;
+
+			for (auto& it : list)
+				InitializeShapes(it, index + 1);
+		}
+
+		void Assignment(std::initializer_list<Ty> list, size_t index, size_t offset) {
+			for (auto it = list.begin(); it != list.end(); ++it)
+				elems_[offset + (it - list.begin())] = *it;
+		}
+
+		template <class T>
+		void Assignment(T&& list, size_t index, size_t offset) {
+			for (auto it = list.begin(); it != list.end(); ++it)
+				Assignment(*it, index + 1, offset + (it - list.begin()) * factors_[index]);
+		}
+
+	private:
+		std::unique_ptr<Ty[]> elems_;
+		size_t count_{ 0 };
+		std::array<size_t, Num> shapes_;
+		std::array<size_t, Num> factors_;
+	};
+
+	template <class First, class... Args>
+	[[nodiscard]] auto MakeArrayNd(First&& first, Args&&... args) {
+		return ArrayNd<First, sizeof...(Args) + 1>(std::forward<First>(first), std::forward<Args>(args)...);
 	}
-
-	ArrayNd(const ArrayNd& arr) {
-		assert(arr.ele_);
-		memcpy(this, &arr, sizeof(arr));
-		ele_ = new T[ele_cnt_];
-		CopyEle(arr.ele_);
-	}
-
-	ArrayNd(ArrayNd&& arr) noexcept {
-		assert(arr.ele_);
-		memcpy(this, &arr, sizeof(arr));
-		arr.ele_ = nullptr;
-	}
-
-	~ArrayNd() {
-		delete[] ele_;
-	}
-
-	void Reset(unsigned char val = 0) {
-		assert(ele_);
-		memset(ele_, val, ele_cnt_ * sizeof(T));
-	}
-
-	template <typename... Ts, typename = std::enable_if_t<sizeof...(Ts) == N>>
-	T& operator()(Ts... ts) const {
-		assert(ele_);
-		return *Index(0, ele_, ts...);
-	}
-
-	template <typename... Ts, typename = std::enable_if_t<sizeof...(Ts) < N > >
-	T* operator()(Ts... ts) const {
-		assert(ele_);
-		return Index(0, ele_, ts...);
-	}
-
-	size_t operator[](size_t idx) const {
-		assert(idx >= 0 && idx < N);
-		assert(ele_);
-		return dim_[idx];
-	}
-
-	ArrayNd& operator=(const ArrayNd& arr) {
-		assert(arr.ele_);
-		ele_cnt_ = arr.ele_cnt_;
-		memcpy(dim_, arr.dim_, sizeof(dim_));
-		memcpy(factor_, arr.factor_, sizeof(factor_));
-
-		delete[] ele_;
-		ele_ = new T[ele_cnt_];
-		CopyEle(arr.ele_);
-
-		return *this;
-	}
-
-	T* begin() {
-		return ele_;
-	}
-
-	T* end() {
-		return ele_ + ele_cnt_;
-	}
-
-private:
-	template <typename T1, typename... Ts>
-	void EmplaceDim(size_t idx, T1 t1, Ts... ts) {
-		static_assert(std::is_integral_v<T1> || std::is_enum_v<T1>);
-		dim_[idx] = t1;
-		if constexpr (sizeof...(ts) > 0)
-			EmplaceDim(++idx, ts...);
-	}
-
-	template <typename T1, typename... Ts>
-	T* Index(size_t idx, T* p, T1 t1, Ts... ts) const {
-		static_assert(std::is_integral_v<T1> || std::is_enum_v<T1>);
-		assert((size_t)t1 < dim_[idx]);
-		return Index(idx + 1, &p[factor_[idx] * t1], ts...);
-	}
-
-	T* Index(size_t, T* p) const {
-		return p;
-	}
-
-	void CopyEle(T* p) {
-		if constexpr (std::is_trivial_v<T>)
-			memcpy(ele_, p, ele_cnt_ * sizeof(T));
-		else
-			for (size_t i = 0; i < ele_cnt_; ++i)
-				ele_[i] = p[i];
-	}
-
-private:
-	T* ele_{ nullptr };
-	size_t ele_cnt_{ 1 };
-	size_t dim_[N]{};
-	size_t factor_[N]{};
-};
+}
