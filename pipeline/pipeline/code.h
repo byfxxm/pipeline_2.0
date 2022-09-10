@@ -65,6 +65,7 @@ namespace pipeline {
 		auto& End() {
 			return end_;
 		}
+
 		auto& Center() {
 			return center_;
 		}
