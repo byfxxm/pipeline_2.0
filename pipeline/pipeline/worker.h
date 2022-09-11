@@ -1,8 +1,8 @@
 #pragma once
 
-struct Code;
-
 namespace pipeline {
+	class Code;
+
 	class PIPELINE_API Worker {
 	public:
 		virtual ~Worker() = default;
