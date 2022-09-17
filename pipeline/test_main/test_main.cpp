@@ -19,12 +19,12 @@
 
 class Fifo final : public pipeline::OutputSwitch {
 public:
-	virtual void Write(pipeline::Code* code) override {
+	virtual void Write(std::shared_ptr<pipeline::Code> code) override {
 		while (!ring_buffer_.Write(code))
 			std::this_thread::yield();
 	}
 
-	void Read(pipeline::Code*& code) {
+	void Read(std::shared_ptr<pipeline::Code>& code) {
 		while (!ring_buffer_.Read(code))
 			std::this_thread::yield();
 	}
@@ -34,21 +34,21 @@ public:
 	}
 
 private:
-	RingBuffer<pipeline::Code*, 1000> ring_buffer_;
+	RingBuffer<std::shared_ptr<pipeline::Code>, 1000> ring_buffer_;
 };
 
 class WorkerMiddle : public pipeline::Worker {
 public:
-	virtual void Do(pipeline::Code* code) override {
+	virtual void Do(std::shared_ptr<pipeline::Code> code) override {
 		Write(code);
 	}
 };
 
 class FirstWorker : public pipeline::Worker {
 public:
-	virtual void Do(pipeline::Code* code) override {
+	virtual void Do(std::shared_ptr<pipeline::Code> code) override {
 		for (int i = 0; i < 100000; ++i) {
-			Write(new pipeline::Line{ pipeline::AxesDouble() });
+			Write(std::make_shared<pipeline::Line>(pipeline::AxesDouble()));
 		}
 
 		Write(code);
@@ -74,7 +74,7 @@ void TestPipeline() {
 	pipeline_start_async(pipeline);
 
 	std::thread mcc([&]() {
-		pipeline::Code* code = nullptr;
+		std::shared_ptr<pipeline::Code> code = nullptr;
 		while (1) {
 			fifo.Read(code);
 			if (!code)
@@ -83,12 +83,10 @@ void TestPipeline() {
 			if (code->Id() == pipeline::CodeId::kMove || code->Id() == pipeline::CodeId::kLine) {
 				std::cout << "------>goto: ";
 				for (size_t i = 0; i < pipeline::kAxesNum; ++i) {
-					std::cout << ((pipeline::Move*)code)->End()[i] << " ";
+					std::cout << static_cast<pipeline::Move*>(code.get())->End()[i] << " ";
 				}
 				std::cout << std::endl;
 			}
-
-			delete code;
 		}
 		});
 

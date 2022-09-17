@@ -6,11 +6,11 @@
 GProcesserDerive::GProcesserDerive(GworkerImp& gworker) :gworker_(gworker) {}
 
 void GProcesserDerive::G0(size_t line_no, gparser::Tag* tags, size_t count) {
-	gworker_.Write(new pipeline::Move(TagsToAxesDouble(tags, count)));
+	gworker_.Write(std::make_shared<pipeline::Move>(TagsToAxesDouble(tags, count)));
 }
 
 void GProcesserDerive::G1(size_t line_no, gparser::Tag* tags, size_t count) {
-	gworker_.Write(new pipeline::Line(TagsToAxesDouble(tags, count)));
+	gworker_.Write(std::make_shared<pipeline::Line>(TagsToAxesDouble(tags, count)));
 }
 
 void GProcesserDerive::G2(size_t line_no, gparser::Tag* tags, size_t count) {

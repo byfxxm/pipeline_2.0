@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "pipeline_imp.h"
 
-void Worker::Write(Code* code) {
+void Worker::Write(std::shared_ptr<Code> code) {
 	if (pipeline_->stop_)
 		return;
 

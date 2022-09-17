@@ -5,7 +5,7 @@ namespace gworker {
 	class GworkerImp : public pipeline::Worker {
 	public:
 		virtual ~GworkerImp() override;
-		virtual void Do(pipeline::Code*) override;
+		virtual void Do(std::shared_ptr<pipeline::Code>) override;
 		bool LoadFile(const char*);
 		void UnloadFile();
 

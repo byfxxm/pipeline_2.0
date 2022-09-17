@@ -5,7 +5,7 @@ GworkerImp::~GworkerImp() {
 	UnloadFile();
 }
 
-void GworkerImp::Do(pipeline::Code*) {
+void GworkerImp::Do(std::shared_ptr<pipeline::Code>) {
 	assert(gparser_);
 	gparser_parse(gparser_);
 	Write(nullptr);

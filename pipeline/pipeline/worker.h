@@ -6,8 +6,8 @@ namespace pipeline {
 	class PIPELINE_API Worker {
 	public:
 		virtual ~Worker() = default;
-		virtual void Do(Code*) = 0;
-		void Write(Code*);
+		virtual void Do(std::shared_ptr<Code>) = 0;
+		void Write(std::shared_ptr<Code>);
 
 	private:
 		friend class PipelineImp;
@@ -18,6 +18,6 @@ namespace pipeline {
 	class OutputSwitch {
 	public:
 		virtual ~OutputSwitch() = default;
-		virtual void Write(Code*) = 0;
+		virtual void Write(std::shared_ptr<Code>) = 0;
 	};
 }
