@@ -83,7 +83,7 @@ void TestPipeline() {
 			if (code->Id() == pipeline::CodeId::kMove || code->Id() == pipeline::CodeId::kLine) {
 				std::cout << "------>goto: ";
 				for (size_t i = 0; i < pipeline::kAxesNum; ++i) {
-					std::cout << static_cast<pipeline::Move*>(code.get())->End()[i] << " ";
+					std::cout << std::dynamic_pointer_cast<pipeline::Move>(code)->End()[i] << " ";
 				}
 				std::cout << std::endl;
 			}
