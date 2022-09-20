@@ -9,6 +9,8 @@ namespace pipeline {
 		virtual ~Worker() = default;
 		virtual void Do(std::shared_ptr<Code>) = 0;
 		void SetPipeline(PipelineImp*, size_t);
+
+	protected:
 		void Write(std::shared_ptr<Code>);
 
 	private:
