@@ -8,8 +8,7 @@ PipelineImp::~PipelineImp() {
 
 void PipelineImp::AddWorker(Worker* worker) {
 	assert(worker);
-	worker->pipeline_ = this;
-	worker->index_ = workers_.size();
+	worker->SetPipeline(this, workers_.size());
 	workers_.push_back(worker);
 }
 
@@ -46,4 +45,19 @@ void PipelineImp::Pause() {
 
 void PipelineImp::Resume() {
 	pause_ = false;
+}
+
+void PipelineImp::Write(size_t index, std::shared_ptr<Code> code) {
+	if (stop_)
+		return;
+
+	if (index == workers_.size() - 1) {
+		while (pause_)
+			std::this_thread::yield();
+		if (output_switch_)
+			output_switch_->Write(code);
+		return;
+	}
+
+	workers_[index + 1]->Do(code);
 }

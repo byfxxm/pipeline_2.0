@@ -2,16 +2,10 @@
 #include "pipeline_imp.h"
 
 void Worker::Write(std::shared_ptr<Code> code) {
-	if (pipeline_->stop_)
-		return;
+	pipeline_->Write(index_, code);
+}
 
-	if (index_ == pipeline_->workers_.size() - 1) {
-		while (pipeline_->pause_)
-			std::this_thread::yield();
-		if (pipeline_->output_switch_)
-			pipeline_->output_switch_->Write(code);
-		return;
-	}
-
-	pipeline_->workers_[index_ + 1]->Do(code);
+void Worker::SetPipeline(PipelineImp* pipeline, size_t index) {
+	pipeline_ = pipeline;
+	index_ = index;
 }

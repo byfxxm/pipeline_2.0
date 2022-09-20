@@ -3,8 +3,6 @@
 
 namespace pipeline {
 	class PipelineImp final {
-		friend class Worker;
-
 	public:
 		~PipelineImp();
 		void AddWorker(Worker*);
@@ -15,6 +13,7 @@ namespace pipeline {
 		bool IsIdle();
 		void Pause();
 		void Resume();
+		void Write(size_t, std::shared_ptr<Code>);
 
 	private:
 		std::vector<Worker*> workers_;
