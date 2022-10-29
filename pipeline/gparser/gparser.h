@@ -21,6 +21,7 @@ namespace gparser {
 
 	class GProcesser {
 	public:
+		virtual ~GProcesser() = default;
 		virtual void G0(size_t, Tag*, size_t) = 0;
 		virtual void G1(size_t, Tag*, size_t) = 0;
 		virtual void G2(size_t, Tag*, size_t) = 0;
